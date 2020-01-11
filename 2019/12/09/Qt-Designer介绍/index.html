@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="psychic79">
+  <meta name="keywords" content="blog">
+  <title>Qt_Designer的介绍和使用-psychic79&#39;s blog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>psychic79's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default-post.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期一, 十二月 9日 2019, 3:56 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.9k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      7 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="Qt-Designer的介绍和使用"><a href="#Qt-Designer的介绍和使用" class="headerlink" title="Qt Designer的介绍和使用"></a>Qt Designer的介绍和使用</h1><p>环境:</p>
+<ul>
+<li>IDE: Pycharm</li>
+<li>PyQt5: 5.13.0</li>
+<li>pyqt5-tools: 5.13.0.1.5</li>
+</ul>
+<h2 id="介绍Qt-Designer"><a href="#介绍Qt-Designer" class="headerlink" title="介绍Qt Designer"></a>介绍Qt Designer</h2><p>Qt Designer是专为制作PyQt程序中UI界面的可视化GUI设计工具，符合MVC模型，分离了界面和逻辑，能够快速开发UI界面。保存生成后缀为.ui的文件，该文件包含的内容时按照XML格式处理的。生成的.ui文件可以通过使用命令行或者pyuic5来将该文件转换为可执行的.py文件。<br>如下图，左边工具箱(Widget Box)提供控件,中间是主窗口，将控件拖到主窗口即可设计页面。右侧有对象查看器(Object Inspector)查看对象列表,属性编辑器(Property Editor)修改控件窗体的属性。资源浏览器(Resource Browser)可以为控件添加图片，比如Button的背景图片。<br><a href="/img/">界面</a></p>
+<p>在属性编辑器里面：</p>
+<ul>
+<li>geometry,相对坐标系，可修改控件大小和位置</li>
+<li>sizePolicy，控件大小策略</li>
+<li>minimumSize，设置最小宽度、高度</li>
+<li>maximumSize，设置最大宽度、高度</li>
+<li>sizeIncrem，</li>
+<li>baseSize，</li>
+<li>palette，</li>
+<li>font，字体</li>
+<li>cursor，光标</li>
+<li>mouseTracking，</li>
+<li>tabletTracking，</li>
+<li>focusPolicy，</li>
+<li>windowTitle，窗口标题</li>
+<li>windowIcon，窗体图标/控件图标</li>
+<li>toolTip，提示信息</li>
+<li>statusTip，任务栏提示信息</li>
+</ul>
+<h2 id="页面和逻辑分离"><a href="#页面和逻辑分离" class="headerlink" title="页面和逻辑分离"></a>页面和逻辑分离</h2><p>通过Qt Designer设计出的页面转换的python文件作为界面文件。假定界面文件名为TextEditor.py。现在需要新建一个逻辑文件并继承界面文件的主窗口类，以此来实现界面和逻辑的分离。新建一个Main.py(名称不固定)：</p>
+<pre><code>import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow
+
+#导入界面文件内容，里面有设计后生成的类Ui_MainWindow
+from TextEditor import *
+
+class MyMainWindow(QMainWindow, Ui_MainWindow):
+    def __init__(self, parent = None):
+        super().__init__(parent)
+        self.setupUI(self)
+
+if __name__ == &#39;__main__&#39;:
+    app = QApplication(sys.argv)
+    myWin = MyMainWindow()
+    myWin.show()
+    sys.exit(app.exec_())</code></pre><h2 id="布局-Layouts"><a href="#布局-Layouts" class="headerlink" title="布局(Layouts)"></a>布局(Layouts)</h2><ul>
+<li>在Widget Box里面有Layouts板块，因为里面的控件还能容纳子控件，所以这种控件也叫容器控件。通过这种方式布局叫做使用容器布局。这个板块有如下控件可选：<ul>
+<li>Vertical Layout(垂直布局)</li>
+<li>Horizontal Layout(水平布局)</li>
+<li>Grid Layout(栅格布局)：行数和列数任意。</li>
+<li>Form Layout(表单布局): 只有两列，行数任意。</li>
+</ul>
+</li>
+<li>选中控件之后右键，能看到Layout选项，叫做使用布局管理器。</li>
+<li>使用Property Editor里面的Geometry</li>
+</ul>
+<p>还得看得懂转换成的python代码是什么意思，所以举例说明(这里使用的容器布局)：</p>
+<pre><code>class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        #创建主窗口
+        MainWindow.setObjectName(&quot;MainWindow&quot;)
+        MainWindow.resize(800, 600)
+
+        #centralwidget的父类为主窗口
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName(&quot;centralwidget&quot;)
+
+        #Vertical Layout，父类为centralwidget
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        #不使用容器控件则不会有这句，当使用布局管理器时可以在Property Inspector看到
+        #geometry属性变灰不可用，说明标签的位置和大小由垂直布局管理器接管，和geometry无关
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(480, 110, 160, 100))
+        self.verticalLayoutWidget.setObjectName(&quot;verticalLayoutWidget&quot;)
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName(&quot;verticalLayout&quot;)
+        self.pushButton_4 = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.pushButton_4.setObjectName(&quot;pushButton_4&quot;)
+        self.verticalLayout.addWidget(self.pushButton_4)
+
+        #Horizontal Layout类似
+        self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(70, 110, 295, 80))
+        self.horizontalLayoutWidget.setObjectName(&quot;horizontalLayoutWidget&quot;)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setObjectName(&quot;horizontalLayout&quot;)
+        self.pushButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.pushButton.setObjectName(&quot;pushButton&quot;)
+        self.horizontalLayout.addWidget(self.pushButton)
+
+        #Gird Layout
+        self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(540, 310, 195, 80))
+        self.gridLayoutWidget.setObjectName(&quot;gridLayoutWidget&quot;)
+        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setObjectName(&quot;gridLayout&quot;)
+        self.pushButton_9 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_9.setObjectName(&quot;pushButton_9&quot;)
+        #addWidget(窗体控件，行位置， 列位置， 要合并的行数， 要合并的列数)，后两个是可选参数
+        self.gridLayout.addWidget(self.pushButton_9, 0, 0, 1, 1)
+
+        #Form Layout
+        self.formLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.formLayoutWidget.setGeometry(QtCore.QRect(120, 290, 195, 80))
+        self.formLayoutWidget.setObjectName(&quot;formLayoutWidget&quot;)
+        self.formLayout = QtWidgets.QFormLayout(self.formLayoutWidget)
+        self.formLayout.setContentsMargins(0, 0, 0, 0)
+        self.formLayout.setObjectName(&quot;formLayout&quot;)
+        self.pushButton_7 = QtWidgets.QPushButton(self.formLayoutWidget)
+        self.pushButton_7.setObjectName(&quot;pushButton_7&quot;)
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.pushButton_7)</code></pre><p>可见PyQt的一个基本原则:主窗口的所有控件都有父类。。。</p>
+<h2 id="spacer"><a href="#spacer" class="headerlink" title="spacer"></a>spacer</h2><p>Layouts下方有个spacer板块，控件主要是在布局时调节控件之间的间隔。</p>
+<pre><code>#Horizontal Spacer对象，注意Expanding是spacer延伸方向
+#参数的含义分别是宽度，高度，水平尺寸策略，垂直尺寸策略
+spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+#addWidget()和addItem()参数类似
+self.gridLayout.addItem(spacerItem, 0, 1, 1, 1)
+#Vertical Spacer对象
+spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+self.gridLayout.addItem(spacerItem1, 1, 0, 1, 1)</code></pre><h2 id="sizePolicy"><a href="#sizePolicy" class="headerlink" title="sizePolicy"></a>sizePolicy</h2><p>sizePolicy在Property Editor。如果窗口在布局管理器的布局不能满足需求，则可以设置这个窗口控件的sizePolicy来实现布局的微调。不同窗口控件的sizePolicy可能不同。<strong>每个控件都有sizeHint(尺寸提示)和minisizeHint(最小尺寸),前者是控件的期望尺寸,后者是控件压缩时能被压缩的最小尺寸</strong>。</p>
+<ul>
+<li>sizePolicy<ul>
+<li>Horizontal Policy(水平策略)<ul>
+<li>Fixed： 控件的尺寸为sizeHint的尺寸且尺寸不会再改变。</li>
+<li>Minimum： sizeHint的尺寸就是控件最小尺寸，且可以变得更大。</li>
+<li>Maximum:和Minimum相反，sizeHint提示的尺寸为最大尺寸,minimumHint为最小尺寸。</li>
+<li>Preferred: sizeHint所提示的尺寸是最佳尺寸,它可以缩小到minimumHint提示的尺寸，也可变得比sizeHint提示的尺寸大。</li>
+<li>Expanding: sizeHint所提示的尺寸是一个合理的尺寸，仍可缩小和变大，范围也是大于等于minimumHint。且该控件会尽可能得获得空间(大),比如在水平滑片的水平方向。</li>
+<li>MinimumExpanding: sizeHint提示的尺寸为可压缩的最小尺寸。和Expanding一样希望尽可能的大。</li>
+<li>Ignored: 无视minimumHint和sizeHint，按照默认来设置。</li>
+</ul>
+</li>
+<li>Vertical Policy</li>
+<li>Horizontal Stretch,水平伸展</li>
+<li>Vertical Stretch,垂直伸展</li>
+</ul>
+</li>
+</ul>
+<pre><code>#这里只创建了一个Push Botton，然后修改了sizePolicy的策略
+self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+self.pushButton.setGeometry(QtCore.QRect(210, 210, 93, 28))
+sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+#水平伸展为0
+sizePolicy.setHorizontalStretch(0)
+#垂直伸展为0
+sizePolicy.setVerticalStretch(0)
+sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
+self.pushButton.setSizePolicy(sizePolicy)
+self.pushButton.setObjectName(&quot;pushButton&quot;)</code></pre><p>##Buddy<br>设置伙伴关系。对Display Widgets设置快捷键，触发快捷键时光标定位到有伙伴关系的Input Widget上。<br>Edit-&gt;Edit Buddy</p>
+<h2 id="Tab-Order"><a href="#Tab-Order" class="headerlink" title="Tab Order"></a>Tab Order</h2><p>设置Tab顺序,即输入窗口每次按Tab时光标跳转的顺序。如果用户为第一个输入窗口小部件提供输入焦点，然后按Tab键，则焦点将移至第二个输入窗口小部件，依此类推。<br>单击Edit-&gt;Edit Tab Order，可以看到在widget上面有数字，那是按动Tab之后光标跳动的顺序，依次单击数字即可改变顺序。也可右键-&gt;Tab Order list，然后修改顺序。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>差不多这样就能满足一般需求了。总结一下一般开发流程:</p>
+<ol>
+<li>新建窗口(一般常用的是Widget(通用窗口)和Main Window(主窗口))。</li>
+<li>修改窗口标题。</li>
+<li>拖动控件到大致位置，调整尺寸大小,控件的文本(除了容器控件，一般不需要调整)。</li>
+<li>对需要代码引用的控件对象命名;对需要微调的控件设置对应属性。</li>
+<li>使用布局管理器或切分窗口(splitter)布局。</li>
+<li>在合适的地方为内置的信号和槽建立信号与槽的连接。</li>
+<li>预览窗口。</li>
+<li>编译窗口生成Python文件。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://doc.qt.io/qtforpython/contents.html" target="_blank" rel="noopener">Qt for Python文档</a><br>《PyQt5快速开发与实战》<br>PS:《PyQt5快速开发与实战》用的是5.9,有一些不适用于5.13</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/PyQt5">PyQt5</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '7f170c26d04b27b42d44',
+      clientSecret: '1f5165c8fd44816b712fad5ba9da73465baa614',
+      repo: 'psychic79.github.io',
+      owner: 'psychic79',
+      admin: '['psychic79']',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?a242e488b14422943bd9e80f2d94ed22";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Qt_Designer的介绍和使用&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+  
+    <script type="text/javascript">
+      //定义获取词语下标
+      var a_idx = 0;
+      jQuery(document).ready(function ($) {
+        //点击body时触发事件
+        $("body").click(function (e) {
+          //需要显示的词语
+          var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正", "法治", "爱国", "敬业", "诚信", "友善");
+          //设置词语给span标签
+          var $i = $("<span/>").text(a[a_idx]);
+          //下标等于原来下标+1  余 词语总数
+          a_idx = (a_idx + 1) % a.length;
+          //获取鼠标指针的位置，分别相对于文档的左和右边缘。
+          //获取x和y的指针坐标
+          var x = e.pageX, y = e.pageY;
+          //在鼠标的指针的位置给$i定义的span标签添加css样式
+          $i.css({
+            "z-index": 999,
+            "top": y - 20,
+            "left": x,
+            "position": "absolute",
+            "font-weight": "bold",
+            "color": rand_color()
+          });
+          // 随机颜色
+          function rand_color() {
+            return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+          }
+          //在body添加这个标签
+          $("body").append($i);
+          //animate() 方法执行 CSS 属性集的自定义动画。
+          //该方法通过CSS样式将元素从一个状态改变为另一个状态。CSS属性值是逐渐改变的，这样就可以创建动画效果。
+          //详情请看http://www.w3school.com.cn/jquery/effect_animate.asp
+          $i.animate({
+            //将原来的位置向上移动180
+            "top": y - 180,
+            "opacity": 0
+            //1500动画的速度
+          }, 1500, function () {
+            //时间到了自动删除
+            $i.remove();
+          });
+        });
+      })
+      ;
+    </script>
+  
+
+
+
+
+
+
+
+</body>
+</html>

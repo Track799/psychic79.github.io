@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="psychic79">
+  <meta name="keywords" content="blog">
+  <title>Js基础(1)-psychic79&#39;s blog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>psychic79's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default-post.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期六, 一月 11日 2020, 3:18 下午
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    2.9k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      11 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>#Js基础(1)</p>
+<p>##使用JavaScript<br>在HTML里面插入JavaScript的主要方法是使用&lt;script&gt;元素,可以将JavaScript嵌入HTML中，也可以包含外部的JavaScript文件。它有如下的属性：</p>
+<ul>
+<li>charset：规定在脚本中使用的字符编码(仅适用于外部脚本)。</li>
+<li>defer：延迟脚本。页面解析完毕后再执行JavaScript脚本，所以相当于立即下载延后执行。</li>
+<li>async：异步脚本。类似defer，也是仅适用于外部脚本且立即下载，不同的是标记为async的脚本不一定按照先后顺序执行(。</li>
+<li>src：执行外部的脚本，包括外部域。</li>
+<li>type：规定编写脚本语言的内容类型,即MIME类型。该属性不是必须的，如果没有指定该属性，则默认属性的值为text/javascript。<br>例如：<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;home&lt;/title&gt;
+  &lt;script type=&quot;text/javascript&quot; src=&quot;http：//www.somewhere.com/somefile.js&quot;&gt;&lt;/script&gt;
+  &lt;script type=&quot;text/javascript&quot; async=&quot;async&quot; src=&quot;a.js&quot;&gt;&lt;/script&gt;    &lt;script type=&quot;text/javascript&quot; async=&quot;async&quot;&gt;&lt;/script&gt;
+  &lt;script type=&quot;text/javascript&quot; defer=&quot;defer&quot; src=&quot;b.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></li>
+</ul>
+<p>###注意：</p>
+<ul>
+<li>传统的写法是将JavaScript和CSS包含在头部，但是有时候影响页面加载速度，所以一般写在body的页面内容的后面,或者两者都写，需要权衡。</li>
+<li>charset,defer,async均是用于外部脚本的属性。</li>
+<li>若没有defer和async，则按照写的顺序执行。</li>
+<li>一旦声明src则不能在script标签里面再写别的JavaScript代码，因为浏览器会忽略该段代码。</li>
+<li>浏览器不会检查包含JavaScript的拓展名(.js)，所以拓展名不是必需的，这样就可以使用PHP等服务器端语言动态生成JavaScript代码，但是服务器会根据拓展名确定使用哪种MIME类型，所以要考虑服务器怎么返回正确的MIME类型。</li>
+<li>那些老旧的实例可能会在&lt;script&gt;标签中使用type=”text/javascript”。现在已经不必这样做了。JavaScript 是所有现代浏览器以及 HTML5 中的默认脚本语言。</li>
+</ul>
+<p>##&lt;noscript&gt;<br>当浏览器不支持脚本，或者浏览器支持但是禁用脚本时会显示&lt;script&gt;元素里面的内容。比如：</p>
+<pre><code>&lt;body&gt;
+  &lt;script type=&quot;text/javascript&quot; src=&quot;a.js&quot;&gt;&lt;/script&gt;
+  &lt;!--当脚本无效时显示该句话--&gt;
+  &lt;noscript&gt;Your browser does not support JavaScript!&lt;/noscript&gt;
+&lt;/body&gt;</code></pre><p>##JavaScript输出</p>
+<ul>
+<li>window.alert(或者直接alert),弹出提示窗口。</li>
+<li>innerHTML,写入HTML元素。一般用法是：document.getElementById(id).innerHTML=”your_content”。<br>document.getElementsByTagName(“form”)通过标签名称获得元素。</li>
+<li>document.write,写到HTML文档里面。</li>
+<li>console.write,写到浏览器控制台。</li>
+</ul>
+<p>###注意</p>
+<ul>
+<li>document.getElementById是document对象的一个方法，类似的还有document.getElementsByName(“name”)，通过元素名称获得元素对象；<br>document.getElementsByTagName(“form”)通过标签名称获得元素。</li>
+<li>在使用document.getElementById()查找元素时注意在之前这个id是否出现,类似于变量的作用域问题。另外该方法仅返回一个(顺序的第一个)匹配特定 ID的元素。</li>
+<li>如果document.write()是在页面解析完之后使用(写在body最后)，则会覆盖原来的页面而只显示使用document,write()写入的内容。</li>
+</ul>
+<p>##数据类型<br>最新的ECMAScript规定了8种数据类型。<br>###Undefined<br>未对声明的变量初始化则变量的值就是undefined。一般undefined用来比较，而不是显式得把它赋值给变量。<strong>但是typeof操作符对未初始化的变量和未声明的变量都返回undefined</strong>。<br>###Null<br>逻辑上讲是空指针。如果初始化变量为null，则typeof返回的是object。对object对象初始化比较适合用null。另外undefined派生自null，所以null == undefined返回true。</p>
+<p>###String<br>注意JavaScript里的String类型不可变更。要想改变原有的字符串变量，需要先销毁原有的字符串，然后再新建一个字符串并重新赋值。比如 x = ‘1’,若执行x += ‘2’,则它先是新建一个字符串，然后赋值’12,然后销毁原有的’1’和’2’。</p>
+<ul>
+<li>对数字，布尔，对象和字符串值转换为String可以使用variableName.toString()来转换，参数规定返回数值的进制比如：<code>var x = 10;xString = x.toString(16);</code>xString则为’a’。</li>
+<li>对于不知道是什么类型的对象可以使用String(),规则：若对象有toString()方法，则调用toString()并返回结果;如果是null则返回’null’;为undefined则返回undefined(null和undefined没有toString()方法)。</li>
+</ul>
+<p>###Number<br>可存8，10，16进制的数,可存0和-0，且0 == -0。八进制则在数字前加0，16进制则加0x(字母大小写均可)。运算时均转换为10进制来算。0.1可表示为.1，1.0可以表示为1.。同时Number也可用科学计数法表示，比如1.3e-10表示1.3乘10的-10次方。</p>
+<ul>
+<li>浮点数的计算精度不足，比如0.1+0.2的结果为0.30000000000000004，这是使用IEEE754的通病。所以做逻辑判断的时候要多注意。</li>
+<li>NaN,not a number,表示应该返回数字但是出错未返回数字(比如1/0),这样就不会报错而继续运行。</li>
+<li>因为NaN != NaN，所以只能用isNaN()判断是否为NaN，它会尝试将参数转化为数值，如果不能转换，则该函数返回true。注意其参数为任何类型。<ul>
+<li>isNaN(NaN);  //true</li>
+<li>isNaN(‘1a1’);  //true,带字母不能转换为数字</li>
+<li>isNaN(‘1’);  //false</li>
+<li>isNaN(true);  //false,Boolean类型</li>
+<li>对于object，isNaN()会调用对象的valueOf()方法确定是否可以转化为数字，如果不可则调用toString(),再测试返回值。</li>
+</ul>
+</li>
+<li>将其他类型转换为数值类型<ul>
+<li><strong>Number()可用于任何数据类型。null返回0，undefined返回NaN，字符串要复杂一些：忽略字符串最前面的空格和0，所以八进制会被视为10进制，比如’ 070’转换后为70而不是56；允许将16进制转换为10进制，比如’ 0xa’转换为10，但是’00xa’为NaN;字符串为空则转换为0；除此之外均为NaN。参数为object时也是先调用valueOf()方法，若返回为NaN，则调用toString()。</strong></li>
+<li><strong>parseInt()专门处理将字符串转换为int。规则如下：允许8和16进制转换为10进制；忽略开头空格直到匹配到非空字符，忽略开头空格的子字符串开头可以是正负号和数字，否则返回NaN；子字符串匹配到第一个数字后会判断下一个是否为数字，若是则继续匹配，否则匹配结束–所以遇到小数点也会匹配结束，因此返回的只会是整数。但是有些时候会发生分歧(有些不支持8进制转换),所以可以使用第二个参数来规定parseInt(‘ 70’,8)，这样结果就为56，注意，第二个参数规定为8时，前置0可以忽略；规定为16时前置0x可以忽略。一般还是指定进制较好。</strong></li>
+<li><strong>parseFloat()和parseInt()类似，也可以转换为整型。区别在于：匹配的第一个小数点有效；忽略前导0；只能转换为10进制，所以没有第二个参数规定进制。</strong></li>
+</ul>
+</li>
+</ul>
+<p>###BigInt<br>###Boolean<br>两个值为true和false，<strong>首字母小写</strong>。可以使用Boolean()转型函数将一个值转化为Boolean类型，其规则为String为空字符串则假，Number为0或NaN则假，Object为空则假，Undefined为假。<br>###Symbol<br>表示独一无二的值。<br>###Object<br>类似于python里面的字典。</p>
+<p>还有一些引用数据类型：array,function(object也是引用数据类型)。<br>可以使用new关键词来声明变量类型,比如：<code>var x = Array</code></p>
+<p>###示例</p>
+<pre><code>//创建array
+var country = new Array();  //创建未初始化
+country[0] = &#39;China&#39;;
+country[1] = &#39;Japan&#39;;
+
+//等价于
+var country = []
+country[0] = &#39;China&#39;;
+country[1] = &#39;Japan&#39;;
+
+/*也可创建时就初始化
+var country = new Array(&#39;China&#39;,&#39;Japan&#39;);
+或者
+var country = [&#39;China&#39;, &#39;Japan&#39;];
+*/
+
+
+//object,可不换行
+var person={
+firstname ： &quot;Adam&quot;,
+id        ：  2333
+};
+
+//object的方法是将键值对里面键为函数名，值改为function类型
+var person = {
+    firstname ： &quot;Adam&quot;,
+    id        ：  2333
+
+    info ： function()
+    {
+        return String(id)+&#39; &#39;+firstname
+    };
+};
+
+//或者创建之后再追加
+var person = new Object();
+person.firstname = &#39;Adam&#39;;
+person.id = 2333;
+person.info = function(){
+    return String(id)+&#39; &#39;+firstname
+}
+
+//对象属性的寻址方式,函数的调用方法：
+lastname = person.lastname;
+lastname = person[&quot;lastname&quot;];
+information = person.info();</code></pre><p>###注意</p>
+<ul>
+<li>就算定义为数组，使用typeof返回的也是object。可以使用instanceof,比如：<code>&gt; var b = new Array(); b instanceof Array;</code></li>
+<li>null为undefined的子类，所以<code>null == undefined</code>会返回true。</li>
+<li>对于引用类型(假设为a)，若执行b = a;则a,b指向同一个内存，即改变任意一个，另外一个也会跟着改变。</li>
+<li></li>
+</ul>
+<p>##变量的一些差别和注意</p>
+<ul>
+<li>在一条语句中声明多个变量时，声明可以跨行，以提高可读性。</li>
+<li>重新声明但未初始化的变量仍然保留原来的值。比如(环境Node.js 12.13.0)：<pre><code>&gt; var x = 7
+undefined
+&gt; var x
+undefined
+&gt; x
+7</code></pre></li>
+</ul>
+<p>##困惑：<br>声明变量时：</p>
+<pre><code>&gt; a=b=c=1
+1
+&gt; a
+1
+&gt; b
+1
+&gt; c
+1
+&gt; var d=e=f=1
+undefined
+&gt; typeof a
+&#39;number&#39;</code></pre><p>一个为undefined，一个为number</p>
+<p>##操作符<br>浮点数64位存储，转换为32位执行操作，操作完后转换位64位存储(下面不写成那么多位了。。),均以补码的值存储(正数补码等于原码)。<strong>在转换过程中，会出现NaN和Infinity被当作0处理</strong>。使用位操作符，对于非数值类型，逻辑上会使用Number()再执行操作。<br>###位操作符</p>
+<ul>
+<li>非(<del>)：取反码，<strong>本质是操作数的负值减1。</strong>比如</del>1 == -2(0001-&gt;1110),~-1 == 0(1111-&gt;0000)</li>
+<li>或(|)：二进制码对应位数，有1则位数为1。比如：25|3 ==27（11001和00011-&gt;11011）</li>
+<li>与(&amp;)：二进制码对应位数，全为1则位数为1。比如：25&amp;3 == 1（11001和00011-&gt;00001）</li>
+<li>异或(^)：二进制码对应位数，全为0或1则为0。比如：25^3 == 26（11001和00011-&gt;11010）</li>
+<li>左位移(&lt;&lt;)：左移不会影响符号位。10&lt;&lt;5 == 64</li>
+<li>有符号右位移(&gt;&gt;)：二进制位移，保留符号位。返回结果是10进制。下同。64&gt;&gt;5 == 2;-64&gt;&gt;5 ==-2。(实际上是000…1000000-&gt;000…10;100…1000000-&gt;100…10)</li>
+<li>无符号左位移(&gt;&gt;&gt;)：它会将负数视为正数处理。64&gt;&gt;5 == 2;-64&gt;&gt;5 ==134217726。(111…1000000-&gt;000001111…1111110,即134217726)</li>
+</ul>
+<p>###逻辑操作符<br>与C++一致。<br>###杂</p>
+<ul>
+<li>++和–同样适用于js。<pre><code>&gt; a = 1
+1
+&gt; a+++1
+2
+&gt; a
+2
+&gt; ++a+1
+4
+&gt; a
+3</code></pre></li>
+<li>对非数值型使用单个+或者-，相当于使用Number()转换为数字。返回结果也为Number()返回的，比如+’2’ == 2,+’a’ ==NaN。</li>
+</ul>
+<p>##语句<br>###if<br>同C++。</p>
+<pre><code>if(condition1){
+    statement1;
+}
+else if(condition2){
+    statement2;
+}
+else{
+    statement3;
+}</code></pre><p>###do-while<br>同C++。<br>###while<br>同C++。<br>###for<br>同C++。<br>###for-in<br>类似于python的for-in语句。用法：</p>
+<pre><code>for (variable in object)
+  statement;
+
+//举例
+var obj = {a:1, b:2, c:3};
+
+for (var prop in obj) {
+  console.log(&quot;obj.&quot; + prop + &quot; = &quot; + obj[prop]);
+}
+
+//输出
+// &quot;obj.a = 1&quot;
+// &quot;obj.b = 2&quot;
+// &quot;obj.c = 3&quot;</code></pre><p>###break和continue</p>
+<p>###label<br>为语句添加标签，用法：<code>label:statement;</code>可由break和continue引用。一般和for语句配合使用。见<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/label" target="_blank" rel="noopener">label - JavaScript | MDN - Mozilla</a>,讲得很详细，示例也多。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/javascript">javascript</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '7f170c26d04b27b42d44',
+      clientSecret: '1f5165c8fd44816b712fad5ba9da73465baa614',
+      repo: 'psychic79.github.io',
+      owner: 'psychic79',
+      admin: '['psychic79']',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?a242e488b14422943bd9e80f2d94ed22";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Js基础(1)&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+  
+    <script type="text/javascript">
+      //定义获取词语下标
+      var a_idx = 0;
+      jQuery(document).ready(function ($) {
+        //点击body时触发事件
+        $("body").click(function (e) {
+          //需要显示的词语
+          var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正", "法治", "爱国", "敬业", "诚信", "友善");
+          //设置词语给span标签
+          var $i = $("<span/>").text(a[a_idx]);
+          //下标等于原来下标+1  余 词语总数
+          a_idx = (a_idx + 1) % a.length;
+          //获取鼠标指针的位置，分别相对于文档的左和右边缘。
+          //获取x和y的指针坐标
+          var x = e.pageX, y = e.pageY;
+          //在鼠标的指针的位置给$i定义的span标签添加css样式
+          $i.css({
+            "z-index": 999,
+            "top": y - 20,
+            "left": x,
+            "position": "absolute",
+            "font-weight": "bold",
+            "color": rand_color()
+          });
+          // 随机颜色
+          function rand_color() {
+            return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+          }
+          //在body添加这个标签
+          $("body").append($i);
+          //animate() 方法执行 CSS 属性集的自定义动画。
+          //该方法通过CSS样式将元素从一个状态改变为另一个状态。CSS属性值是逐渐改变的，这样就可以创建动画效果。
+          //详情请看http://www.w3school.com.cn/jquery/effect_animate.asp
+          $i.animate({
+            //将原来的位置向上移动180
+            "top": y - 180,
+            "opacity": 0
+            //1500动画的速度
+          }, 1500, function () {
+            //时间到了自动删除
+            $i.remove();
+          });
+        });
+      })
+      ;
+    </script>
+  
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>Js基础(1)</title>
+    <link href="/2020/01/11/Js%E5%9F%BA%E7%A1%80-1/"/>
+    <url>/2020/01/11/Js%E5%9F%BA%E7%A1%80-1/</url>
+    
+    <content type="html"><![CDATA[<p>#Js基础(1)</p><p>##使用JavaScript<br>在HTML里面插入JavaScript的主要方法是使用&lt;script&gt;元素,可以将JavaScript嵌入HTML中，也可以包含外部的JavaScript文件。它有如下的属性：</p><ul><li>charset：规定在脚本中使用的字符编码(仅适用于外部脚本)。</li><li>defer：延迟脚本。页面解析完毕后再执行JavaScript脚本，所以相当于立即下载延后执行。</li><li>async：异步脚本。类似defer，也是仅适用于外部脚本且立即下载，不同的是标记为async的脚本不一定按照先后顺序执行(。</li><li>src：执行外部的脚本，包括外部域。</li><li>type：规定编写脚本语言的内容类型,即MIME类型。该属性不是必须的，如果没有指定该属性，则默认属性的值为text/javascript。<br>例如：<pre><code>&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;  &lt;title&gt;home&lt;/title&gt;  &lt;script type=&quot;text/javascript&quot; src=&quot;http：//www.somewhere.com/somefile.js&quot;&gt;&lt;/script&gt;  &lt;script type=&quot;text/javascript&quot; async=&quot;async&quot; src=&quot;a.js&quot;&gt;&lt;/script&gt;    &lt;script type=&quot;text/javascript&quot; async=&quot;async&quot;&gt;&lt;/script&gt;  &lt;script type=&quot;text/javascript&quot; defer=&quot;defer&quot; src=&quot;b.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</code></pre></li></ul><p>###注意：</p><ul><li>传统的写法是将JavaScript和CSS包含在头部，但是有时候影响页面加载速度，所以一般写在body的页面内容的后面,或者两者都写，需要权衡。</li><li>charset,defer,async均是用于外部脚本的属性。</li><li>若没有defer和async，则按照写的顺序执行。</li><li>一旦声明src则不能在script标签里面再写别的JavaScript代码，因为浏览器会忽略该段代码。</li><li>浏览器不会检查包含JavaScript的拓展名(.js)，所以拓展名不是必需的，这样就可以使用PHP等服务器端语言动态生成JavaScript代码，但是服务器会根据拓展名确定使用哪种MIME类型，所以要考虑服务器怎么返回正确的MIME类型。</li><li>那些老旧的实例可能会在&lt;script&gt;标签中使用type=”text/javascript”。现在已经不必这样做了。JavaScript 是所有现代浏览器以及 HTML5 中的默认脚本语言。</li></ul><p>##&lt;noscript&gt;<br>当浏览器不支持脚本，或者浏览器支持但是禁用脚本时会显示&lt;script&gt;元素里面的内容。比如：</p><pre><code>&lt;body&gt;  &lt;script type=&quot;text/javascript&quot; src=&quot;a.js&quot;&gt;&lt;/script&gt;  &lt;!--当脚本无效时显示该句话--&gt;  &lt;noscript&gt;Your browser does not support JavaScript!&lt;/noscript&gt;&lt;/body&gt;</code></pre><p>##JavaScript输出</p><ul><li>window.alert(或者直接alert),弹出提示窗口。</li><li>innerHTML,写入HTML元素。一般用法是：document.getElementById(id).innerHTML=”your_content”。<br>document.getElementsByTagName(“form”)通过标签名称获得元素。</li><li>document.write,写到HTML文档里面。</li><li>console.write,写到浏览器控制台。</li></ul><p>###注意</p><ul><li>document.getElementById是document对象的一个方法，类似的还有document.getElementsByName(“name”)，通过元素名称获得元素对象；<br>document.getElementsByTagName(“form”)通过标签名称获得元素。</li><li>在使用document.getElementById()查找元素时注意在之前这个id是否出现,类似于变量的作用域问题。另外该方法仅返回一个(顺序的第一个)匹配特定 ID的元素。</li><li>如果document.write()是在页面解析完之后使用(写在body最后)，则会覆盖原来的页面而只显示使用document,write()写入的内容。</li></ul><p>##数据类型<br>最新的ECMAScript规定了8种数据类型。<br>###Undefined<br>未对声明的变量初始化则变量的值就是undefined。一般undefined用来比较，而不是显式得把它赋值给变量。<strong>但是typeof操作符对未初始化的变量和未声明的变量都返回undefined</strong>。<br>###Null<br>逻辑上讲是空指针。如果初始化变量为null，则typeof返回的是object。对object对象初始化比较适合用null。另外undefined派生自null，所以null == undefined返回true。</p><p>###String<br>注意JavaScript里的String类型不可变更。要想改变原有的字符串变量，需要先销毁原有的字符串，然后再新建一个字符串并重新赋值。比如 x = ‘1’,若执行x += ‘2’,则它先是新建一个字符串，然后赋值’12,然后销毁原有的’1’和’2’。</p><ul><li>对数字，布尔，对象和字符串值转换为String可以使用variableName.toString()来转换，参数规定返回数值的进制比如：<code>var x = 10;xString = x.toString(16);</code>xString则为’a’。</li><li>对于不知道是什么类型的对象可以使用String(),规则：若对象有toString()方法，则调用toString()并返回结果;如果是null则返回’null’;为undefined则返回undefined(null和undefined没有toString()方法)。</li></ul><p>###Number<br>可存8，10，16进制的数,可存0和-0，且0 == -0。八进制则在数字前加0，16进制则加0x(字母大小写均可)。运算时均转换为10进制来算。0.1可表示为.1，1.0可以表示为1.。同时Number也可用科学计数法表示，比如1.3e-10表示1.3乘10的-10次方。</p><ul><li>浮点数的计算精度不足，比如0.1+0.2的结果为0.30000000000000004，这是使用IEEE754的通病。所以做逻辑判断的时候要多注意。</li><li>NaN,not a number,表示应该返回数字但是出错未返回数字(比如1/0),这样就不会报错而继续运行。</li><li>因为NaN != NaN，所以只能用isNaN()判断是否为NaN，它会尝试将参数转化为数值，如果不能转换，则该函数返回true。注意其参数为任何类型。<ul><li>isNaN(NaN);  //true</li><li>isNaN(‘1a1’);  //true,带字母不能转换为数字</li><li>isNaN(‘1’);  //false</li><li>isNaN(true);  //false,Boolean类型</li><li>对于object，isNaN()会调用对象的valueOf()方法确定是否可以转化为数字，如果不可则调用toString(),再测试返回值。</li></ul></li><li>将其他类型转换为数值类型<ul><li><strong>Number()可用于任何数据类型。null返回0，undefined返回NaN，字符串要复杂一些：忽略字符串最前面的空格和0，所以八进制会被视为10进制，比如’ 070’转换后为70而不是56；允许将16进制转换为10进制，比如’ 0xa’转换为10，但是’00xa’为NaN;字符串为空则转换为0；除此之外均为NaN。参数为object时也是先调用valueOf()方法，若返回为NaN，则调用toString()。</strong></li><li><strong>parseInt()专门处理将字符串转换为int。规则如下：允许8和16进制转换为10进制；忽略开头空格直到匹配到非空字符，忽略开头空格的子字符串开头可以是正负号和数字，否则返回NaN；子字符串匹配到第一个数字后会判断下一个是否为数字，若是则继续匹配，否则匹配结束–所以遇到小数点也会匹配结束，因此返回的只会是整数。但是有些时候会发生分歧(有些不支持8进制转换),所以可以使用第二个参数来规定parseInt(‘ 70’,8)，这样结果就为56，注意，第二个参数规定为8时，前置0可以忽略；规定为16时前置0x可以忽略。一般还是指定进制较好。</strong></li><li><strong>parseFloat()和parseInt()类似，也可以转换为整型。区别在于：匹配的第一个小数点有效；忽略前导0；只能转换为10进制，所以没有第二个参数规定进制。</strong></li></ul></li></ul><p>###BigInt<br>###Boolean<br>两个值为true和false，<strong>首字母小写</strong>。可以使用Boolean()转型函数将一个值转化为Boolean类型，其规则为String为空字符串则假，Number为0或NaN则假，Object为空则假，Undefined为假。<br>###Symbol<br>表示独一无二的值。<br>###Object<br>类似于python里面的字典。</p><p>还有一些引用数据类型：array,function(object也是引用数据类型)。<br>可以使用new关键词来声明变量类型,比如：<code>var x = Array</code></p><p>###示例</p><pre><code>//创建arrayvar country = new Array();  //创建未初始化country[0] = &#39;China&#39;;country[1] = &#39;Japan&#39;;//等价于var country = []country[0] = &#39;China&#39;;country[1] = &#39;Japan&#39;;/*也可创建时就初始化var country = new Array(&#39;China&#39;,&#39;Japan&#39;);或者var country = [&#39;China&#39;, &#39;Japan&#39;];*///object,可不换行var person={firstname ： &quot;Adam&quot;,id        ：  2333};//object的方法是将键值对里面键为函数名，值改为function类型var person = {    firstname ： &quot;Adam&quot;,    id        ：  2333    info ： function()    {        return String(id)+&#39; &#39;+firstname    };};//或者创建之后再追加var person = new Object();person.firstname = &#39;Adam&#39;;person.id = 2333;person.info = function(){    return String(id)+&#39; &#39;+firstname}//对象属性的寻址方式,函数的调用方法：lastname = person.lastname;lastname = person[&quot;lastname&quot;];information = person.info();</code></pre><p>###注意</p><ul><li>就算定义为数组，使用typeof返回的也是object。可以使用instanceof,比如：<code>&gt; var b = new Array(); b instanceof Array;</code></li><li>null为undefined的子类，所以<code>null == undefined</code>会返回true。</li><li>对于引用类型(假设为a)，若执行b = a;则a,b指向同一个内存，即改变任意一个，另外一个也会跟着改变。</li><li></li></ul><p>##变量的一些差别和注意</p><ul><li>在一条语句中声明多个变量时，声明可以跨行，以提高可读性。</li><li>重新声明但未初始化的变量仍然保留原来的值。比如(环境Node.js 12.13.0)：<pre><code>&gt; var x = 7undefined&gt; var xundefined&gt; x7</code></pre></li></ul><p>##困惑：<br>声明变量时：</p><pre><code>&gt; a=b=c=11&gt; a1&gt; b1&gt; c1&gt; var d=e=f=1undefined&gt; typeof a&#39;number&#39;</code></pre><p>一个为undefined，一个为number</p><p>##操作符<br>浮点数64位存储，转换为32位执行操作，操作完后转换位64位存储(下面不写成那么多位了。。),均以补码的值存储(正数补码等于原码)。<strong>在转换过程中，会出现NaN和Infinity被当作0处理</strong>。使用位操作符，对于非数值类型，逻辑上会使用Number()再执行操作。<br>###位操作符</p><ul><li>非(<del>)：取反码，<strong>本质是操作数的负值减1。</strong>比如</del>1 == -2(0001-&gt;1110),~-1 == 0(1111-&gt;0000)</li><li>或(|)：二进制码对应位数，有1则位数为1。比如：25|3 ==27（11001和00011-&gt;11011）</li><li>与(&amp;)：二进制码对应位数，全为1则位数为1。比如：25&amp;3 == 1（11001和00011-&gt;00001）</li><li>异或(^)：二进制码对应位数，全为0或1则为0。比如：25^3 == 26（11001和00011-&gt;11010）</li><li>左位移(&lt;&lt;)：左移不会影响符号位。10&lt;&lt;5 == 64</li><li>有符号右位移(&gt;&gt;)：二进制位移，保留符号位。返回结果是10进制。下同。64&gt;&gt;5 == 2;-64&gt;&gt;5 ==-2。(实际上是000…1000000-&gt;000…10;100…1000000-&gt;100…10)</li><li>无符号左位移(&gt;&gt;&gt;)：它会将负数视为正数处理。64&gt;&gt;5 == 2;-64&gt;&gt;5 ==134217726。(111…1000000-&gt;000001111…1111110,即134217726)</li></ul><p>###逻辑操作符<br>与C++一致。<br>###杂</p><ul><li>++和–同样适用于js。<pre><code>&gt; a = 11&gt; a+++12&gt; a2&gt; ++a+14&gt; a3</code></pre></li><li>对非数值型使用单个+或者-，相当于使用Number()转换为数字。返回结果也为Number()返回的，比如+’2’ == 2,+’a’ ==NaN。</li></ul><p>##语句<br>###if<br>同C++。</p><pre><code>if(condition1){    statement1;}else if(condition2){    statement2;}else{    statement3;}</code></pre><p>###do-while<br>同C++。<br>###while<br>同C++。<br>###for<br>同C++。<br>###for-in<br>类似于python的for-in语句。用法：</p><pre><code>for (variable in object)  statement;//举例var obj = {a:1, b:2, c:3};for (var prop in obj) {  console.log(&quot;obj.&quot; + prop + &quot; = &quot; + obj[prop]);}//输出// &quot;obj.a = 1&quot;// &quot;obj.b = 2&quot;// &quot;obj.c = 3&quot;</code></pre><p>###break和continue</p><p>###label<br>为语句添加标签，用法：<code>label:statement;</code>可由break和continue引用。一般和for语句配合使用。见<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/label" target="_blank" rel="noopener">label - JavaScript | MDN - Mozilla</a>,讲得很详细，示例也多。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>javascript</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>初试MySQL</title>
+    <link href="/2019/12/29/%E5%88%9D%E8%AF%95MySQL/"/>
+    <url>/2019/12/29/%E5%88%9D%E8%AF%95MySQL/</url>
+    
+    <content type="html"><![CDATA[<p>#初试MySQL<br>环境:win10<br>##安装MySQL<br>MySQL Installer MSI提供的版本貌似比较老，所以下载并安装编译的二进制文件zip包(目前最新的是8.0.18)。下载之后解压,解压文件夹为mysql-8.0.18-winx64。</p><p>1.在文件夹<strong>根目录新建my.ini文件，编码方式为ANSI</strong>。内容暂时配置为:</p><pre><code>[mysqld]    #这个一定不能忘否则报错basedir = &quot;D:\mysql-8.0.18-winx64&quot;    #文件根目录datadir = &quot;D:\mysql-8.0.18-winx64\mysql_data\data&quot;    #存放数据库文件的文件夹，随意即可</code></pre><p>注意:文档说Windows路径用正斜杠/,反斜杠用双反斜杠\\，但是直接复制的路径发现也没报错。<br>2.初始化MySQL。</p><blockquote><p>ZIP存档不包含data目录。要通过创建数据目录并填充mysql系统数据库中的表来初始化MySQL安装，请使用--initialize或初始化MySQL --initialize-insecure。</p></blockquote><p>打开cmd在D:\mysql-8.0.18-winx64运行<code>mysqld --initialize</code>,<del>然后运行<code>mysqld --initialize-secure</code></del>,(或者<code>mysqld --initialize-insecure</code>,前者会生成随机的初始root密码,后者不会)。<br>3.接着键入<code>mysqld --console</code>来运行MySQL server。随后可看到类似以下内容:</p><pre><code>mysqld: ready for connectionsVersion: &#39;8.0.20&#39;  socket: &#39;&#39;  port: 3306</code></pre><blockquote><p>如果省略该--console选项，则服务器将诊断输出写入数据目录中的错误日志。错误日志是带有.err扩展名的文件，可以使用该--log-error 选项进行设置。</p></blockquote><p>4.打开第二个cmd运行客户端程序，对于之前使用<code>mysqld --initialize</code>初始化后，键入<code>mysql -h localhost -u root -p</code>以此连接到服务器root,看到提示叫输入密码(这个密码就是前面提到的随机生成的密码),在mysql_data(在my.ini里面设置的文件夹，当initialize并运行server后就有文件生成)找到<strong>xxx.err文件</strong>(xxx为用户名,该文件为错误日志)，打开文件可以看到一条类似这样记录:</p><pre><code>2019-12-29T08:11:20.833521Z 5 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: qpK4sFtJzH;t</code></pre><p>密码找到了,输入即可看到<code>mysql&gt;</code>。对于之前使用<code>mysqld --initialize-insecure</code>初始化的情况，使用<code>mysql -u root --skip-password</code>连接服务器。<br>5.更改密码(这个密码比较蛋疼),键入<code>mysql&gt; alter user &#39;root&#39;@&#39;localhost&#39; identified by &#39;123567Zz&#39;;</code>其中后面的字符串是密码,随意,<strong>分号不能省略</strong>。之后可尝试exit后重新login,就会发现密码已更改。<br>5.配置环境变量，使之可以在cmd的任意文件夹下使用。配置的时候注意不是它的根目录而是bin目录，比如这里是<code>D:\mysql-8.0.18-winx64\bin</code>。在cmd键入mysql后可见”它不是报错xxx不是内部或外部文件”，说明它被识别:</p><pre><code>C:\Users\Dell&gt;mysqlERROR 1045 (28000): Access denied for user &#39;ODBC&#39;@&#39;localhost&#39; (using password: NO)</code></pre><p>之后就可以在其他目录下运行命令<code>mysqld --console</code>和<code>mysql -h localhost -u root -p</code>了。</p><p>##参考<br><a href="https://dev.mysql.com/doc/refman/8.0/en/windows-install-archive.html" target="_blank" rel="noopener">Documentation of Using Noinstall ZIP Archive</a></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>MySQL</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>信号和槽关联</title>
+    <link href="/2019/12/13/%E4%BF%A1%E5%8F%B7%E5%92%8C%E6%A7%BD%E5%85%B3%E8%81%94/"/>
+    <url>/2019/12/13/%E4%BF%A1%E5%8F%B7%E5%92%8C%E6%A7%BD%E5%85%B3%E8%81%94/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Qt_Designer的介绍和使用</title>
+    <link href="/2019/12/09/Qt-Designer%E4%BB%8B%E7%BB%8D/"/>
+    <url>/2019/12/09/Qt-Designer%E4%BB%8B%E7%BB%8D/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Qt-Designer的介绍和使用"><a href="#Qt-Designer的介绍和使用" class="headerlink" title="Qt Designer的介绍和使用"></a>Qt Designer的介绍和使用</h1><p>环境:</p><ul><li>IDE: Pycharm</li><li>PyQt5: 5.13.0</li><li>pyqt5-tools: 5.13.0.1.5</li></ul><h2 id="介绍Qt-Designer"><a href="#介绍Qt-Designer" class="headerlink" title="介绍Qt Designer"></a>介绍Qt Designer</h2><p>Qt Designer是专为制作PyQt程序中UI界面的可视化GUI设计工具，符合MVC模型，分离了界面和逻辑，能够快速开发UI界面。保存生成后缀为.ui的文件，该文件包含的内容时按照XML格式处理的。生成的.ui文件可以通过使用命令行或者pyuic5来将该文件转换为可执行的.py文件。<br>如下图，左边工具箱(Widget Box)提供控件,中间是主窗口，将控件拖到主窗口即可设计页面。右侧有对象查看器(Object Inspector)查看对象列表,属性编辑器(Property Editor)修改控件窗体的属性。资源浏览器(Resource Browser)可以为控件添加图片，比如Button的背景图片。<br><a href="/img/">界面</a></p><p>在属性编辑器里面：</p><ul><li>geometry,相对坐标系，可修改控件大小和位置</li><li>sizePolicy，控件大小策略</li><li>minimumSize，设置最小宽度、高度</li><li>maximumSize，设置最大宽度、高度</li><li>sizeIncrem，</li><li>baseSize，</li><li>palette，</li><li>font，字体</li><li>cursor，光标</li><li>mouseTracking，</li><li>tabletTracking，</li><li>focusPolicy，</li><li>windowTitle，窗口标题</li><li>windowIcon，窗体图标/控件图标</li><li>toolTip，提示信息</li><li>statusTip，任务栏提示信息</li></ul><h2 id="页面和逻辑分离"><a href="#页面和逻辑分离" class="headerlink" title="页面和逻辑分离"></a>页面和逻辑分离</h2><p>通过Qt Designer设计出的页面转换的python文件作为界面文件。假定界面文件名为TextEditor.py。现在需要新建一个逻辑文件并继承界面文件的主窗口类，以此来实现界面和逻辑的分离。新建一个Main.py(名称不固定)：</p><pre><code>import sysfrom PyQt5.QtWidgets import QApplication, QMainWindow#导入界面文件内容，里面有设计后生成的类Ui_MainWindowfrom TextEditor import *class MyMainWindow(QMainWindow, Ui_MainWindow):    def __init__(self, parent = None):        super().__init__(parent)        self.setupUI(self)if __name__ == &#39;__main__&#39;:    app = QApplication(sys.argv)    myWin = MyMainWindow()    myWin.show()    sys.exit(app.exec_())</code></pre><h2 id="布局-Layouts"><a href="#布局-Layouts" class="headerlink" title="布局(Layouts)"></a>布局(Layouts)</h2><ul><li>在Widget Box里面有Layouts板块，因为里面的控件还能容纳子控件，所以这种控件也叫容器控件。通过这种方式布局叫做使用容器布局。这个板块有如下控件可选：<ul><li>Vertical Layout(垂直布局)</li><li>Horizontal Layout(水平布局)</li><li>Grid Layout(栅格布局)：行数和列数任意。</li><li>Form Layout(表单布局): 只有两列，行数任意。</li></ul></li><li>选中控件之后右键，能看到Layout选项，叫做使用布局管理器。</li><li>使用Property Editor里面的Geometry</li></ul><p>还得看得懂转换成的python代码是什么意思，所以举例说明(这里使用的容器布局)：</p><pre><code>class Ui_MainWindow(object):    def setupUi(self, MainWindow):        #创建主窗口        MainWindow.setObjectName(&quot;MainWindow&quot;)        MainWindow.resize(800, 600)        #centralwidget的父类为主窗口        self.centralwidget = QtWidgets.QWidget(MainWindow)        self.centralwidget.setObjectName(&quot;centralwidget&quot;)        #Vertical Layout，父类为centralwidget        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)        #不使用容器控件则不会有这句，当使用布局管理器时可以在Property Inspector看到        #geometry属性变灰不可用，说明标签的位置和大小由垂直布局管理器接管，和geometry无关        self.verticalLayoutWidget.setGeometry(QtCore.QRect(480, 110, 160, 100))        self.verticalLayoutWidget.setObjectName(&quot;verticalLayoutWidget&quot;)        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)        self.verticalLayout.setContentsMargins(0, 0, 0, 0)        self.verticalLayout.setObjectName(&quot;verticalLayout&quot;)        self.pushButton_4 = QtWidgets.QPushButton(self.verticalLayoutWidget)        self.pushButton_4.setObjectName(&quot;pushButton_4&quot;)        self.verticalLayout.addWidget(self.pushButton_4)        #Horizontal Layout类似        self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(70, 110, 295, 80))        self.horizontalLayoutWidget.setObjectName(&quot;horizontalLayoutWidget&quot;)        self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)        self.horizontalLayout.setObjectName(&quot;horizontalLayout&quot;)        self.pushButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)        self.pushButton.setObjectName(&quot;pushButton&quot;)        self.horizontalLayout.addWidget(self.pushButton)        #Gird Layout        self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)        self.gridLayoutWidget.setGeometry(QtCore.QRect(540, 310, 195, 80))        self.gridLayoutWidget.setObjectName(&quot;gridLayoutWidget&quot;)        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)        self.gridLayout.setContentsMargins(0, 0, 0, 0)        self.gridLayout.setObjectName(&quot;gridLayout&quot;)        self.pushButton_9 = QtWidgets.QPushButton(self.gridLayoutWidget)        self.pushButton_9.setObjectName(&quot;pushButton_9&quot;)        #addWidget(窗体控件，行位置， 列位置， 要合并的行数， 要合并的列数)，后两个是可选参数        self.gridLayout.addWidget(self.pushButton_9, 0, 0, 1, 1)        #Form Layout        self.formLayoutWidget = QtWidgets.QWidget(self.centralwidget)        self.formLayoutWidget.setGeometry(QtCore.QRect(120, 290, 195, 80))        self.formLayoutWidget.setObjectName(&quot;formLayoutWidget&quot;)        self.formLayout = QtWidgets.QFormLayout(self.formLayoutWidget)        self.formLayout.setContentsMargins(0, 0, 0, 0)        self.formLayout.setObjectName(&quot;formLayout&quot;)        self.pushButton_7 = QtWidgets.QPushButton(self.formLayoutWidget)        self.pushButton_7.setObjectName(&quot;pushButton_7&quot;)        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.pushButton_7)</code></pre><p>可见PyQt的一个基本原则:主窗口的所有控件都有父类。。。</p><h2 id="spacer"><a href="#spacer" class="headerlink" title="spacer"></a>spacer</h2><p>Layouts下方有个spacer板块，控件主要是在布局时调节控件之间的间隔。</p><pre><code>#Horizontal Spacer对象，注意Expanding是spacer延伸方向#参数的含义分别是宽度，高度，水平尺寸策略，垂直尺寸策略spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)#addWidget()和addItem()参数类似self.gridLayout.addItem(spacerItem, 0, 1, 1, 1)#Vertical Spacer对象spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)self.gridLayout.addItem(spacerItem1, 1, 0, 1, 1)</code></pre><h2 id="sizePolicy"><a href="#sizePolicy" class="headerlink" title="sizePolicy"></a>sizePolicy</h2><p>sizePolicy在Property Editor。如果窗口在布局管理器的布局不能满足需求，则可以设置这个窗口控件的sizePolicy来实现布局的微调。不同窗口控件的sizePolicy可能不同。<strong>每个控件都有sizeHint(尺寸提示)和minisizeHint(最小尺寸),前者是控件的期望尺寸,后者是控件压缩时能被压缩的最小尺寸</strong>。</p><ul><li>sizePolicy<ul><li>Horizontal Policy(水平策略)<ul><li>Fixed： 控件的尺寸为sizeHint的尺寸且尺寸不会再改变。</li><li>Minimum： sizeHint的尺寸就是控件最小尺寸，且可以变得更大。</li><li>Maximum:和Minimum相反，sizeHint提示的尺寸为最大尺寸,minimumHint为最小尺寸。</li><li>Preferred: sizeHint所提示的尺寸是最佳尺寸,它可以缩小到minimumHint提示的尺寸，也可变得比sizeHint提示的尺寸大。</li><li>Expanding: sizeHint所提示的尺寸是一个合理的尺寸，仍可缩小和变大，范围也是大于等于minimumHint。且该控件会尽可能得获得空间(大),比如在水平滑片的水平方向。</li><li>MinimumExpanding: sizeHint提示的尺寸为可压缩的最小尺寸。和Expanding一样希望尽可能的大。</li><li>Ignored: 无视minimumHint和sizeHint，按照默认来设置。</li></ul></li><li>Vertical Policy</li><li>Horizontal Stretch,水平伸展</li><li>Vertical Stretch,垂直伸展</li></ul></li></ul><pre><code>#这里只创建了一个Push Botton，然后修改了sizePolicy的策略self.pushButton = QtWidgets.QPushButton(self.centralwidget)self.pushButton.setGeometry(QtCore.QRect(210, 210, 93, 28))sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)#水平伸展为0sizePolicy.setHorizontalStretch(0)#垂直伸展为0sizePolicy.setVerticalStretch(0)sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())self.pushButton.setSizePolicy(sizePolicy)self.pushButton.setObjectName(&quot;pushButton&quot;)</code></pre><p>##Buddy<br>设置伙伴关系。对Display Widgets设置快捷键，触发快捷键时光标定位到有伙伴关系的Input Widget上。<br>Edit-&gt;Edit Buddy</p><h2 id="Tab-Order"><a href="#Tab-Order" class="headerlink" title="Tab Order"></a>Tab Order</h2><p>设置Tab顺序,即输入窗口每次按Tab时光标跳转的顺序。如果用户为第一个输入窗口小部件提供输入焦点，然后按Tab键，则焦点将移至第二个输入窗口小部件，依此类推。<br>单击Edit-&gt;Edit Tab Order，可以看到在widget上面有数字，那是按动Tab之后光标跳动的顺序，依次单击数字即可改变顺序。也可右键-&gt;Tab Order list，然后修改顺序。</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>差不多这样就能满足一般需求了。总结一下一般开发流程:</p><ol><li>新建窗口(一般常用的是Widget(通用窗口)和Main Window(主窗口))。</li><li>修改窗口标题。</li><li>拖动控件到大致位置，调整尺寸大小,控件的文本(除了容器控件，一般不需要调整)。</li><li>对需要代码引用的控件对象命名;对需要微调的控件设置对应属性。</li><li>使用布局管理器或切分窗口(splitter)布局。</li><li>在合适的地方为内置的信号和槽建立信号与槽的连接。</li><li>预览窗口。</li><li>编译窗口生成Python文件。</li></ol><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://doc.qt.io/qtforpython/contents.html" target="_blank" rel="noopener">Qt for Python文档</a><br>《PyQt5快速开发与实战》<br>PS:《PyQt5快速开发与实战》用的是5.9,有一些不适用于5.13</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>PyQt5</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>PyQt5简单入门</title>
+    <link href="/2019/12/08/PyQt5%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8/"/>
+    <url>/2019/12/08/PyQt5%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8/</url>
+    
+    <content type="html"><![CDATA[<h1 id="PyQt5简单入门"><a href="#PyQt5简单入门" class="headerlink" title="PyQt5简单入门"></a>PyQt5简单入门</h1><p>PyQt5对python3有很好的支持。环境：python 3.6.7，IDE：pycharm</p><h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><p>Python作为脚本语言原本是不具备GUI功能，但是其良好的可扩展性，使得有很多出现很多GUI控件集来满足使用Python开发产品。<br>PyQt是基于Qt的GUI控件集，它和Qt都是用C++写的。能很好得跨平台。同时支持纯代码设计和<strong>使用IDE拖动控件直接设计窗体并自动生成可执行的Python代码</strong>。后者的实现使我们能更专注于逻辑的编写和功能的实现。<br>除了PyQt之外还有tkinter,wxPython,PyGUI等支持开发GUI。</p><h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><ol><li>安装PyQt5:<br>在pycharm的terminal直接<code>pip install PyQt5</code>即可，觉得速度慢可移步国内镜像。当然也可以在pycharm的setting-&gt;Project-&gt;Project Interpreter里面下载。如下：<a href="/img/pyqt_pycharm.png">!install PyQt5</a></li><li>安装常用的Qt工具：<br>PyQt不提供Qt Designer等工具，因此还得安装一些常用的Qt工具。<br>需要安装<strong>pyqt5-tools</strong>(或者写作PyQt5-tools,二者是一个东西)，方法同上。</li><li>将Qt工具添加到External Tools:<br>在setting-&gt;Tools-&gt;External Tools里面添加设置。由于需要Qt Designer设计UI，同时需要P有UIC将ui文件转换为Python可运行代码，于是需要添加两个工具。先添加Qt designer再添加PyUIC。在Edit Tool里面像下面一样配置：<ul><li>Name:qt_designer(可以随便取)。Group:External Tools。</li><li>Tool Settings:<ul><li>Program:在创建的虚拟环境的脚本文件夹里面有一个designer.exe文件，这个就是Qt Designer的启动文件。这里是填它的路径。比如<code>C:\project_name\venv\Scripts\designer.exe</code></li><li>Arguments：可不填</li><li>Working directory：<code>$ProjectFileDir$</code>  (此处直接复制该段即可)</li></ul></li><li>Name:PyUIC, Group:External Tools</li><li>Tool Setting(：<ul><li>program：为python路径，比如：<code>C:\project_name\venv\Scripts\python.exe</code></li><li>Arguments:  <code>-m PyQt5.uic.pyuic  $FileName$ -o $FileNameWithoutExtension$.py</code>    (复制即可)</li></ul></li><li>Working directory: <code>$ProjectFileDir$</code>    (此处直接复制该段即可)<br>到此时环境就配置好了。(Qt Designer界面有汉化，一找就能找到。这里给一个<a href="https://www.jianshu.com/p/3d5f5f28e137" target="_blank" rel="noopener">汉化教程</a>)</li></ul></li></ol><h2 id="入门教程"><a href="#入门教程" class="headerlink" title="入门教程"></a>入门教程</h2><p>这位哥们写的教程简单直接，让我们快速上手而不需要晦涩的基础知识(Qt Designer直接拖动控件)<a href="https://blog.csdn.net/AzureMouse/article/details/90338961" target="_blank" rel="noopener">PyQt5（designer）入门教程</a></p><h2 id="获取帮助"><a href="#获取帮助" class="headerlink" title="获取帮助"></a>获取帮助</h2><ul><li>使用python内置的<a href="https://docs.python.org/zh-cn/3/library/functions.html?highlight=dir#dir" target="_blank" rel="noopener">dir()</a>查看对象或类的属性和方法。</li><li>使用内置的<a href="https://docs.python.org/zh-cn/3/library/functions.html?highlight=dir#help" target="_blank" rel="noopener">help()</a>查看函数或模块用途的详细说明。</li><li><a href="https://doc.qt.io/qtforpython/" target="_blank" rel="noopener">Ducumentation of Qt for Python</a></li></ul>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>PyQt5</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>python的一点小细节</title>
+    <link href="/2019/12/07/python%E7%9A%84%E4%B8%80%E7%82%B9%E5%B0%8F%E7%BB%86%E8%8A%82/"/>
+    <url>/2019/12/07/python%E7%9A%84%E4%B8%80%E7%82%B9%E5%B0%8F%E7%BB%86%E8%8A%82/</url>
+    
+    <content type="html"><![CDATA[<h1 id="python的一点小细节"><a href="#python的一点小细节" class="headerlink" title="python的一点小细节"></a>python的一点小细节</h1><p>环境：python3.7.4和3.6.7</p><h2 id="python的-和"><a href="#python的-和" class="headerlink" title="python的/和//"></a>python的/和//</h2><p>在C++里面，当操作数里面有float或double类型时，返回float或double类型的结果。在python3.x里面使用/直接返回float，使用//返回整形<br>/返回float,//始终返回整形，即使相除为小数也取整。</p><pre><code>&gt;&gt;&gt; flag = 4/2&gt;&gt;&gt; type(flag)        #操作数为int也返回float&lt;class &#39;float&#39;&gt;&gt;&gt;&gt; flag_2 = 4//2&gt;&gt;&gt; type(flag_2)      &lt;class &#39;int&#39;&gt;&gt;&gt;&gt; flag_3 = 4//3     #与操作数无关，始终返回结果为int&gt;&gt;&gt; flag_31</code></pre>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>看《洛丽塔》</title>
+    <link href="/2019/12/07/%E7%9C%8B%E3%80%8A%E6%B4%9B%E4%B8%BD%E5%A1%94%E3%80%8B/"/>
+    <url>/2019/12/07/%E7%9C%8B%E3%80%8A%E6%B4%9B%E4%B8%BD%E5%A1%94%E3%80%8B/</url>
+    
+    <content type="html"><![CDATA[<h1 id="看《洛丽塔》"><a href="#看《洛丽塔》" class="headerlink" title="看《洛丽塔》"></a>看《洛丽塔》</h1><p>《洛丽塔》讲述了一个禁忌之恋</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>观影</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>pip换源</title>
+    <link href="/2019/12/03/pip%E6%8D%A2%E6%BA%90/"/>
+    <url>/2019/12/03/pip%E6%8D%A2%E6%BA%90/</url>
+    
+    <content type="html"><![CDATA[<h1 id="国内的一些镜像源"><a href="#国内的一些镜像源" class="headerlink" title="国内的一些镜像源"></a>国内的一些镜像源</h1><p>- 清华大学        <code>https://pypi.tuna.tsinghua.edu.cn/simple/</code></p><ul><li>阿里云          <code>https://mirrors.aliyun.com/pypi/simple/</code></li><li>中国科技大学     <code>https://pypi.mirrors.ustc.edu.cn/simple/</code></li><li>豆瓣            <code>http://pypi.douban.com/simple/</code></li><li>中国科学技术大学 <code>http://pypi.mirrors.ustc.edu.cn/simple/</code></li><li>山东理工大学：   <code>http://pypi.sdutlinux.org/</code> </li></ul>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>pip</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>requirements和ignore</title>
+    <link href="/2019/12/03/requirements%E5%92%8Cignore/"/>
+    <url>/2019/12/03/requirements%E5%92%8Cignore/</url>
+    
+    <content type="html"><![CDATA[<h1 id="requirements-text和-gitignore"><a href="#requirements-text和-gitignore" class="headerlink" title="requirements.text和.gitignore"></a>requirements.text和.gitignore</h1><p>简单记录方便快速使用</p><h2 id="requirements-txt"><a href="#requirements-txt" class="headerlink" title="requirements.txt"></a>requirements.txt</h2><p>直接进入虚拟环境然后切换到项目根目录，使用pip的freeze：<br><code>(venv) F:\what\atcumt&gt;pip freeze &gt; ./requirements.txt</code><br>然后就会发现新增requirements.txt，且写入需要的包，比如这里是：</p><pre><code>asgiref==3.2.3Django==3.0Pillow==6.2.1pytz==2019.3sqlparse==0.3.0</code></pre><p>之后只需：<br><code>pip install -r requirements.txt</code></p><h2 id="gitignore"><a href="#gitignore" class="headerlink" title=".gitignore"></a>.gitignore</h2><p>创建该文件目的是指定Git忽略未跟踪文件中的想忽略的文件。即.gitignore文件只能作用于 Untracked Files也就是那些从来没有被 Git 记录过的文件(自添加以后，从未add及commit过的文件)<br>如果文件曾经被 Git 记录过，那么.gitignore就对它们完全无效一般来讲忽略虚拟环境，编译的中间文件，日志，临时文件，密码文件，数据库等，比如：</p><pre><code>venv.gitnoredb.sqlite3#注意不是反斜线atcumt/__pycache__/</code></pre><p>更详细的见下面：<br><a href="https://git-scm.com/docs/gitignore" target="_blank" rel="noopener">git</a><br><a href="https://www.cnblogs.com/kevingrace/p/5690241.html" target="_blank" rel="noopener">gitignore配置运维总结</a><br><a href="https://blog.csdn.net/gjy211/article/details/51607347" target="_blank" rel="noopener">使用.gitignore文件</a></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>快速使用</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>super()函数</title>
+    <link href="/2019/11/22/super-%E5%87%BD%E6%95%B0/"/>
+    <url>/2019/11/22/super-%E5%87%BD%E6%95%B0/</url>
+    
+    <content type="html"><![CDATA[<h1 id="super-type-object-or-type-函数"><a href="#super-type-object-or-type-函数" class="headerlink" title="super(type[,object-or-type])函数"></a>super(type[,object-or-type])函数</h1><p>环境：</p><ul><li>python版本:3.7.4</li><li>IDE: spyder</li></ul><h2 id="MRO列表"><a href="#MRO列表" class="headerlink" title="MRO列表"></a>MRO列表</h2><p>MRO，即method resolution order，方法解析顺序。MRO列表即查找成员时搜索全部基类所用的先后顺序组成的列表。<br>其顺序为：<strong>子类先于超类，尊重<strong>base</strong>的先后顺序</strong>。例子见下。</p><h2 id="super-函数"><a href="#super-函数" class="headerlink" title="super()函数"></a>super()函数</h2><p>super()为python的内置函数，主要用于处理类继承出现的问题。比如初始化时，比如调用超类的方法的时候。<br><strong>python3.x可以直接使用super().XXX替代python2.x的super(class,self).xxx</strong><br>在单继承里，可以<strong>避免直接显示超类名而提高可维护性</strong>。比如：</p><pre><code>class Base():    def __init__(self):        passclass A(Base):    def __init__(self):        super(A,self).__init__()    #在这里避免了出现Base类名</code></pre><p>如果我们想让A继承另一个超类，直接修改继承的类名即可：</p><pre><code>#直接修改类名class A(Another_Base):    def __init__(self):        super(A,self).__init__()    #这里就可以避免修改</code></pre><p>当然在使用super()函数时可以直接super().__init__(),下面的例子也是如此。<br>在多重继承时，该方法使菱形图成为可能：</p><pre><code>class Base():    def __init__(self):        print(&quot;Base&quot;)class A(Base):    def __init__(self):        super(A,self).__init__()        print(&quot;A&quot;)class B(Base):    def __init__(self):        super().__init__()    #使用python3.x的用法        print(&quot;B&quot;)class C(A,B):    def __init__(self):        super(C,self).__init__()        print(&quot;C&quot;)d = C()print(&#39;=&#39;*20)print(C.mro())    #获取MRO列表</code></pre><p>运行结果如下:</p><pre><code>runfile(&#39;C:/Users/Dell/.spyder-py3/temp.py&#39;, wdir=&#39;C:/Users/Dell/.spyder-py3&#39;)BaseBAC====================[&lt;class &#39;__main__.C&#39;&gt;, &lt;class &#39;__main__.A&#39;&gt;, &lt;class &#39;__main__.B&#39;&gt;, &lt;class &#39;__main__.Base&#39;&gt;, &lt;class &#39;object&#39;&gt;]</code></pre><p>其继承关系为：<br>C-&gt;A,B-&gt;Base-&gt;Object,A优先于B(见MRO列表)的原因是C.<strong>bases</strong>是(A,B)</p><h3 id="参数的含义"><a href="#参数的含义" class="headerlink" title="参数的含义"></a>参数的含义</h3><p>inst通过属性提供整个MRO，当前类名cls告诉它当前的位置。</p><blockquote></blockquote><p>所以super()实际上做的差不多是:</p><pre><code>def super(cls, inst):    mro = inst.__class__.mro() # Always the most derived class    return mro[mro.index(cls) + 1]</code></pre><p>实用建议：</p><pre><code>#使用**kwds，每次调用都剥离需要的参数class Shape：    def __init __(self，shapename，**kwds):        self.shapename = shapename         super().__ init __(**kwds)         class ColoredShape(Shape):    def __init __(self，color，**kwds)：        self。 color = color         super().__ init __(**kwds)cs = ColoredShape(color=&#39;red&#39;, shapename=&#39;circle&#39;)</code></pre><p>总结一下:</p><ul><li>了解了MRO</li><li>知道了super()的用法和参数的含义</li></ul><p>参考：</p><ul><li><a href="https://www.runoob.com/python/python-func-super.html" target="_blank" rel="noopener">菜鸟教程</a></li><li><a href="https://docs.python.org/zh-cn/3/library/functions.html?highlight=super#super" target="_blank" rel="noopener">内置函数super() - python 3.8.0文档</a></li><li><a href="https://stackoverflow.com/questions/15896265/python-super-inheritance-and-needed-arguments/15896594#15896594" target="_blank" rel="noopener">Python super() inheritance and needed arguments - stack overflow</a></li><li><a href="https://rhettinger.wordpress.com/2011/05/26/super-considered-super/" target="_blank" rel="noopener">Python’s super() considered super!</a></li></ul>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>存储器</title>
+    <link href="/2019/11/20/%E5%AD%98%E5%82%A8%E5%99%A8/"/>
+    <url>/2019/11/20/%E5%AD%98%E5%82%A8%E5%99%A8/</url>
+    
+    <content type="html"><![CDATA[<h1 id="存储器"><a href="#存储器" class="headerlink" title="存储器"></a>存储器</h1><h2 id="存储器分类"><a href="#存储器分类" class="headerlink" title="存储器分类"></a>存储器分类</h2><p><img src="https://www.xianjichina.com/data/editer/20180901/image/ed9bff01d1244a474b84123d3079c508.jpg" srcset="/img/loading.gif" alt="分类"></p><h2 id="速度"><a href="#速度" class="headerlink" title="速度"></a>速度</h2><p>寄存器&gt;缓存&gt;主/内存&gt;磁盘&gt;光盘&gt;磁带</p><h2 id="RAM"><a href="#RAM" class="headerlink" title="RAM"></a>RAM</h2><ul><li>Random Access Memory，随机存取存储器</li><li>分为SRAM和DRAM</li><li>一般作为电脑主存</li></ul><h3 id="SRAM"><a href="#SRAM" class="headerlink" title="SRAM"></a>SRAM</h3><ul><li>静态RAM,是由CMOS管实现</li><li>只要通电就能进行存取，但是断电之后数据会消失</li><li>特点：存取速度高，相应价格更贵。</li></ul><h3 id="DRAM"><a href="#DRAM" class="headerlink" title="DRAM"></a>DRAM</h3><ul><li>动态RAM,是由xx实现</li><li>特点：速度相对SRAM慢，价格较SRAM便宜。</li></ul><h3 id="ROM"><a href="#ROM" class="headerlink" title="ROM"></a>ROM</h3><ul><li>Read Only Memory，只读存储器，由半导体实现</li><li>只能读取不能写入<br>PROM<br>主条目：PROM<br>可编程只读存储器（Programmable ROM，PROM）其内部有行列式的镕丝，可依用户（厂商）的需要，利用电流将其烧断，以写入所需的数据及程序，镕丝一经烧断便无法再恢复，亦即数据无法再更改。</li></ul><p>EPROM<br>主条目：EPROM<br>可抹除可编程只读存储器（Erasable Programmable Read Only Memory，EPROM）可利用高电压将数据编程写入，但抹除时需将线路曝光于紫外线下一段时间，数据始可被清空，再供重复使用。因此，在封装外壳上会预留一个石英玻璃所制的透明窗以便进行紫外线曝光。写入程序后通常会用贴纸遮盖透明窗，以防日久不慎曝光过量影响数据。</p><p>OTPROM<br>一次编程只读存储器（One Time Programmable Read Only Memory，OTPROM）内部所用的芯片与写入原理同EPROM，但是为了节省成本，封装上不设置透明窗，因此编程写入之后就不能再抹除改写。</p><p>EEPROM<br>主条目：EEPROM<br>电子抹除式可复写只读存储器（Electrically Erasable Programmable Read Only Memory，EEPROM）之运作原理类似EPROM，但是抹除的方式是使用高电场来完成，因此不需要透明窗。</p><p>闪存</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>计算机组成原理</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>运算方法和运算器</title>
+    <link href="/2019/11/07/%E8%BF%90%E7%AE%97%E6%96%B9%E6%B3%95%E5%92%8C%E8%BF%90%E7%AE%97%E5%99%A8/"/>
+    <url>/2019/11/07/%E8%BF%90%E7%AE%97%E6%96%B9%E6%B3%95%E5%92%8C%E8%BF%90%E7%AE%97%E5%99%A8/</url>
+    
+    <content type="html"><![CDATA[<h1 id="运算方法和运算器"><a href="#运算方法和运算器" class="headerlink" title="运算方法和运算器"></a>运算方法和运算器</h1><p>由于正数的原码，反码和补码一致，所以下面均不再重述。</p><h2 id="原码"><a href="#原码" class="headerlink" title="原码"></a>原码</h2><p>原码形式为$x_n \cdots x_2x_1x_0$,其中$x_n$为符号位。<br><strong>注意:真值和原码是不一样的,真值带符号，而原码用符号位代替符号</strong>，如：真值为+001，则原码为0001；真值为-101，则原码为1101。</p><p>其定义为：<br>$$ [x]_原=\left{<br>\begin{array}{rcl}<br>x                    &amp;      &amp; {2^n \leq x \leq 0}\<br>2^n+ \lvert x \rvert &amp;      &amp; {0 \leq x \leq -2^n}<br>\end{array} \right. $$</p><p>举例说明(8位)：</p><table><thead><tr><th align="center">数字</th><th align="center">原码</th><th align="center">补码</th><th align="center">反码</th></tr></thead><tbody><tr><td align="center">9</td><td align="center">00001001</td><td align="center">00001001</td><td align="center">00001001</td></tr><tr><td align="center">-9</td><td align="center">10001001</td><td align="center">11110110</td><td align="center">11110111</td></tr><tr><td align="center">优点：表示法简单易懂，正数符号位为0，负数符号位为1，其余为二进制表示。</td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td align="center">缺点：</td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td align="center">- 原码不符合加法，比如[-5]_原+[4]_原 = [1]_原 ，(10000101+00000100=10001001)但是原码计算出来为-9。</td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td align="center">- +0和-0原码表示不一致</td><td align="center"></td><td align="center"></td><td align="center"></td></tr></tbody></table><h2 id="补码"><a href="#补码" class="headerlink" title="补码"></a>补码</h2><p>定义：<br>$$ [x]_补=\left{<br>\begin{array}{rcl}<br>x                    &amp;      &amp; {2^n \leq x \leq 0}\<br>2^{n+1} - \lvert x \rvert &amp;      &amp; {0 \leq x \leq -2^n}<br>\end{array} \right. $$</p><p>为了弥补原码出现的问题于是创建补码。创建的思路来源于钟表：从4点校准时钟为6点，可以顺时针调节两格或者逆时针调节10格。所以-10$ \Leftrightarrow $ +2 (mod = 12),即2是-10关于12的补码。于是可以将减法转变为加法。<br>举例：<br>数字：-1000110(7位，n = 7) $ \rightarrow$ 原码：11000110 $ \rightarrow$ 补码：10111010($2^{7+1}$-1000110)<br>会发现和加上符号位的位数一致。。</p><p>$[x]_补$ $\rightarrow$ $[2x]_补$；$[x]_补$ $\rightarrow$ $[x/2]_补$,类比10进制可知<strong>只需移动小数点</strong>即可。比如$[x]_补$=0.10101，则$[2x]_补$=1.0101，$[x/2]_补$=0.010101。</p><h2 id="反码"><a href="#反码" class="headerlink" title="反码"></a>反码</h2><p>为了方便将原码转换成补码，于是产生了反码。<br>定义：在原码的基础上除符号位不变，其余位均取反(这是有符号位的定义，对于没有符号位的情况，反码即是直接所有位取反)。</p><p>$$<br>原码 \xrightarrow{\text{除符号位取反}} 反码 \xrightarrow{\text{反码最低位加1}} 补码<br>$$<br>$$<br>eg:10000101(原码) \rightarrow 11111010(反码) \rightarrow 11111011(补码)<br>$$<br>$$<br>当然也可像上面(按照2^{n+1}+x)直接求补码：1000000000-10000101=11111011<br>$$</p><h2 id="移码"><a href="#移码" class="headerlink" title="移码"></a>移码</h2><p>通过补码很难看出数的大小，于是有了移码。移码常用来表示阶码。<br>假定定点整数原码$x_n \cdots x_2x_1x_0$，则移码可表示为[x]_移=$2^n+x$。其中$2^n$为偏移常量,<strong>n为数值部分位数,即n为真值不为原码</strong>。</p><p><strong>但是在IEEE754的32位中，阶码字段n为8，偏移常量不为$2^n=256$,而是等于$2^{n-1}-1=127$,这样指数真值的表示范围就是-127<del>+128(否则为0</del>255),64位中，n=11,偏移常量为$2^{10}-1=1023$,表示的范围为-1023，1204。</strong><br>举例：<br>x = +10101,则$ [x]_移 $ = 1,10101,x = -10101,则$ [x]_移  $=2^5-10101 = 0,01011。(逗号左边为符号位，右边为数值，显然<strong>移码的符号为表示规则和原码，反码，补码相反。</strong>)</p><table><thead><tr><th align="center">数字</th><th align="center">真值</th><th align="center">原码</th><th align="center">补码</th><th align="center">反码</th><th align="center">移码</th></tr></thead><tbody><tr><td align="center">-127</td><td align="center">-01111111</td><td align="center">11111111</td><td align="center">10000000</td><td align="center">10000000</td><td align="center">$00000001(2^7-127)$</td></tr><tr><td align="center">-1</td><td align="center">-0000001</td><td align="center">10000001</td><td align="center">11110110</td><td align="center">11110111</td><td align="center">$01111111(2^7-1)$</td></tr><tr><td align="center">1</td><td align="center">+0000001</td><td align="center">00000001</td><td align="center">00000001</td><td align="center">00000001</td><td align="center">$10000001(2^7+1)$</td></tr><tr><td align="center">+127</td><td align="center">+01111111</td><td align="center">01111111</td><td align="center">01111111</td><td align="center">01111111</td><td align="center">$11111111(2^7+127)$</td></tr><tr><td align="center">## 浮点数早期一般表示</td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td align="center">早期的浮点数表示(非IEEE754):</td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td><td align="center"></td></tr></tbody></table><table><thead><tr><th align="center">阶符</th><th align="center">阶码</th><th align="center">数符</th><th align="center">尾数</th></tr></thead><tbody><tr><td align="center">解释：</td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td align="center">- 阶符表示指数的正负</td><td align="center"></td><td align="center"></td><td align="center"></td></tr><tr><td align="center">- 数符表示数的正负</td><td align="center"></td><td align="center"></td><td align="center"></td></tr></tbody></table><h2 id="IEEE754"><a href="#IEEE754" class="headerlink" title="IEEE754"></a>IEEE754</h2><p>IEEE754为规范的公认的浮点数表示方法。<br>32位浮点数的标准形式：</p><table><thead><tr><th align="center">数符S</th><th align="center">阶码E</th><th align="center">尾数M</th></tr></thead></table><p>其中数符1位，阶码8位，尾数23位。<br>阶码E采用移码表示。E=e+127,e为指数真值。这样真值表示范围为-127~128，隐藏了阶符。另外E=00000000和11111111时作特殊处理。<br><strong>规格化表示</strong>：尾数非0时，尾数域最高有效位为1。所以尾数域实际上表示的数为1.M。<br>所以IEEE754标准下的一个规格化的32位浮点数位：$x = (-1)^s*(1.M)*2^{E-127}$<br>64位浮点数与上类似：</p><table><thead><tr><th align="center">数符S</th><th align="center">阶码E</th><th align="center">尾数M</th></tr></thead></table><p>数符1位，阶码11位，尾数52位。E=e+1023,指数真值表示范围-1023~1024。</p><h2 id="运算法则"><a href="#运算法则" class="headerlink" title="运算法则"></a>运算法则</h2><ol><li>$[x]_补 + [y]_补 = [x+y]_补_$</li><li>$[x]_补 - [y]_补 = [x-y]_补 = [x]_补 + [-y]_补$</li><li>$[-y]_补 = -[y]_补$</li><li>$[[x]_补]_补 = [x]_原$</li></ol><p>由3式可知，<strong>对[y]_补包括符号位取反然后末位加1即可得到[-y]_补</strong>，即[-y]_补 = -[y]_补 + 2^{-n}。<br>由4式可知，对补码不包括符号位取反然后末位加1即可得到原码。<br>需要注意的是，补码运算时的机器字长一定。例如：</p><ol><li>$x=(11)=(1011)_2,y=(5)=(0101)_2$，字长为5位，则$[x]_补+[-y]_补=01011+11011=100110(6位)=(6)_10$,6位超过字长所以去掉首位。</li><li>一个字节表示一个数，则$[+7]_补+[-6]_补$=00000111+11111010=100000001(9位)=00000001(8位)</li></ol><h2 id="溢出检测"><a href="#溢出检测" class="headerlink" title="溢出检测"></a>溢出检测</h2><p>判断溢出采用双符号位法，也叫变异补码。00为正，11为负。两个符号位都参与运算，<strong>最高符号位</strong>产生的进位时要丢掉。这样<strong>最高符号位</strong>始终表示正确符号，且符号位为10或01表示溢出。溢出的逻辑表达式为$V=s_1 \ast s_2$,s_1,s_2分别为符号位。<br>溢出检测方式为单符号位法<strong>最高有效位(数值部分)</strong>进位而符号位没有进位时为正溢，最高有效位没有进位而符号位进位时为负溢。溢出的逻辑表达式为$V=c_1 \ast c_2,c_1为最高有效位进位，c_2为符号位进位。</p><h2 id="不恢复余数法"><a href="#不恢复余数法" class="headerlink" title="不恢复余数法"></a>不恢复余数法</h2><p>不恢复余数法也叫加减交替法，用于除法(在除之前要注意|被除数|-|除数|的大小，若差为正，则表示溢出。因为定点小数的数值部分小于1)其步骤如下：<br>前提：假设[x]_补/[y]_补</p><ol><li>求$[x]_补，[y]_补，[-y]_补$</li><li>$[x]_补+[-y]_补$得到结果R</li><li>如果 R&lt;0,商0，R左进位，执行第4步，否则 R&gt;0,商1，R左进位，执行第2步</li><li>$[x]_补+[y]_补得到结果R$<br>例如：</li></ol><h2 id="杂"><a href="#杂" class="headerlink" title="杂"></a>杂</h2><ul><li>纯小数：数值部分小于1的数<h3 id="常用数字"><a href="#常用数字" class="headerlink" title="常用数字"></a>常用数字</h3>$2^3 = 8$<br>$2^4 = 16$<br>$2^5 = 32$<br>$2^6 = 64$<br>$2^7 = 128$<br>$2^8 = 256$<br>$2^9 = 512$<br>$2^{10} = 1024$</li></ul>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>计算机组成原理</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>计算机概论</title>
+    <link href="/2019/11/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%A6%82%E8%AE%BA/"/>
+    <url>/2019/11/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%A6%82%E8%AE%BA/</url>
+    
+    <content type="html"><![CDATA[<h1 id="计算机概论"><a href="#计算机概论" class="headerlink" title="计算机概论"></a>计算机概论</h1><p>记录一些知识点</p><h2 id="计算机分类"><a href="#计算机分类" class="headerlink" title="计算机分类"></a>计算机分类</h2><p><img src="/img/computer_sort.png" srcset="/img/loading.gif" alt="计算机分类"><br>其中专用计算机最经济最快速但是适应性差。通用计算机适应性强但是牺牲了效率、速度和经济性。<br>单片机，微型机，工作站，服务器，大型机，超级计算机的简易型逐级递增，功耗、性能、数据存储量、指令系统和价格逐级递增。</p><h2 id="计算机发展"><a href="#计算机发展" class="headerlink" title="计算机发展"></a>计算机发展</h2><ul><li>电子管计算机<ul><li>器件特性：电子管</li><li>运算速度：几千~几万次/秒</li><li>缺点：体积大、成本高、功耗高、不可靠</li></ul></li><li>晶体管计算机<ul><li>器件特性：晶体管，磁芯存储器</li><li>运算速度：几万次~几十万次/秒</li></ul></li><li>中小规模集成电路计算机<ul><li>产品特性：集成电路，操作系统</li><li>运算速度：几十万~几百玩次/秒</li></ul></li><li>大规模、超大规模集成电路计算机<ul><li>产品特性：大规模集成电路，半导体存储器，微型计算机出现</li><li>运算速度：几百万~几千万次/秒</li></ul></li><li>巨大规模集成电路计算机<ul><li>时间跨度：1991~</li><li>产品特性：VLSI、ULSI、半导体存储器，微机发展迅速</li><li>运算速度：几亿次~几百亿次/秒</li></ul></li></ul><h2 id="计算机性能指标"><a href="#计算机性能指标" class="headerlink" title="计算机性能指标"></a>计算机性能指标</h2><ul><li>吞吐量：单位时间处理的信息量</li><li>响应时间：从输入有效到系统产生响应之间的时间</li><li>利用率：系统实际使用时间和给定时间的比率</li><li>处理机字长：整数运算器的位数</li><li>总线带宽：运算器和存储器之间进行互连的总线的位数</li><li>存储器容量</li><li>存储器带宽：单位时间从存储器读出的二进制数信息量</li><li>主频：CPU工作节拍的主频率</li></ul><h2 id="硬件-hardware"><a href="#硬件-hardware" class="headerlink" title="硬件(hardware)"></a>硬件(hardware)</h2><ol><li>运算器(ALU):参与算数和逻辑运算。<ul><li>长度一般为8位，16位，32位，64位和128位。</li></ul></li><li>存储器(Memory)：存放程序(指令)和数据。<ul><li>存储单位：bit(比特，位),Byte(字节),KB,MB,GB,TB,PB,EB,ZB,YB,BB。1B=8bit。</li><li>其中存储器分为外存储器和内存储器。外存储器分为磁盘，磁带，磁鼓，光盘。内存储器分为ROM和RAM。ROM分为ROM,PROM,EPROM,EEPROM。RAM分为SRAM,DRAM,SDRAM,EDRAM。</li></ul></li><li>控制器(Control Unit,CU)：按照程序排列的指令序列从内存中取出指令加以分析(译码器对指令的操作码加以分析判别)，然后执行操作。<ul><li>指令由操作码和地址码组成，分别指出操作的性质和操作数的地址。</li><li>指令周期：又称读取－执行周期（fetch-and-execute cycle）是指CPU要执行一条机器指令花费的时间，由若干机器周期组成。详见<a href="https://zh.wikipedia.org/wiki/%E6%8C%87%E4%BB%A4%E5%91%A8%E6%9C%9F" target="_blank" rel="noopener">wiki-指令周期</a></li><li>取指周期：取得指令和解码指令的过程称为~</li><li>执行周期：执行指令和存储结果的过程称为~</li><li>指令流：取值周期内从内存中读出的信息流叫~，流向控制器。</li><li>数据流：执行周期内从内存中读出的信息流叫~，流向运算器。</li></ul></li><li>适配器(adapter)：相当于转换器，保证外围设备按照计算机限制的形式传递信息。</li><li>输入输出设备(I/O)：如鼠标键盘显示屏。</li><li>总线(Bus)：计算机系统的骨架，是系统部件进行数据传输的公共通路。</li></ol><h2 id="冯·诺依曼结构、哈佛结构"><a href="#冯·诺依曼结构、哈佛结构" class="headerlink" title="冯·诺依曼结构、哈佛结构"></a>冯·诺依曼结构、哈佛结构</h2><p>冯·诺伊曼结构（英语：Von Neumann architecture），也称冯·诺伊曼模型（Von Neumann model）或普林斯顿结构（Princeton architecture）<br>冯·诺依曼结构特点：全机以CPU为中心，输入的信息在CPU控制下才能写入主存储器，输出的信息也只有在CPU的控制下才能从主存储器中取出送至相应的输出设备。<br><img src="https://yun.kejimofang.com/intericon/20190427nuoyi.jpg" srcset="/img/loading.gif" alt="冯·诺依曼结构"><br><a href="https://blog.csdn.net/u014470361/article/details/79774331" target="_blank" rel="noopener">冯诺依曼结构、哈佛结构、改进型哈佛结构</a><br><a href="https://www.zhihu.com/question/22406681" target="_blank" rel="noopener">为什么电脑还沿用冯·诺伊曼结构而不使用哈佛结构？</a></p><h2 id="软件-software"><a href="#软件-software" class="headerlink" title="软件(software)"></a>软件(software)</h2><p><img src="/img/computer_software.png" srcset="/img/loading.gif" alt="计算机软件分类"></p><ul><li>软件层次：硬件-&gt;系统程序-&gt;应用程序-&gt;用户</li><li>计算机系统层次：</li><li>计算机层次系统：<ul><li>微程序设计级(逻辑电路级)：属于硬件级的。机器硬件直接执行微指令。如果某应用程序直接用微指令来编写，那么可在该级运行。</li><li>一般机器级(也叫机器语言级)：也是硬件级的。有微程序解释机器指令系统。</li><li>操作系统级：操作系统程序实现。这些操作系统由机器指令和广义指令组成，广义指令是操作系统定义和解释的软件指令，所以该级也称混合级。</li><li>汇编语言级：提供符号形式语言(汇编语言)编写。</li><li>高级语言层：面向用户，通过高级语言编译程序支持和执行的。</li><li>ps：也有人把应用层列在高级应用层之上。</li></ul></li></ul><h2 id="软硬件逻辑等价性"><a href="#软硬件逻辑等价性" class="headerlink" title="软硬件逻辑等价性"></a>软硬件逻辑等价性</h2><ul><li>无形的逻辑实体和物理实体在逻辑功能上是等价的。</li><li>原理上任何操作都可由软件完成，也可由硬件完成。例如逻辑运算可由逻辑电路实现也可由程序实现。</li><li>固件(firmware)作为程序固化的ROM，形态上是固件，但是实现软件的功能</li><li>比如Vmware虚拟机用软件模拟出硬件的功能。</li></ul><h2 id="他山之石"><a href="#他山之石" class="headerlink" title="他山之石"></a>他山之石</h2><p><a href="https://althims.com/2018/11/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">moyu’s blog-计算机系统概论</a></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>计算机组成原理</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>gitalk报错</title>
+    <link href="/2019/11/02/gitalk%E6%8A%A5%E9%94%99/"/>
+    <url>/2019/11/02/gitalk%E6%8A%A5%E9%94%99/</url>
+    
+    <content type="html"><![CDATA[<h1 id="gitalk报错"><a href="#gitalk报错" class="headerlink" title="gitalk报错"></a>gitalk报错</h1><p>在使用博客时添加gitalk时出现的一些错误</p><h2 id="Error-Not-Found"><a href="#Error-Not-Found" class="headerlink" title="Error: Not Found"></a>Error: Not Found</h2><p>检查_config.yml里关于gitalk设置repo,直接为repo名，不用写成URL</p><h2 id="未找到相关的Issues进行评论"><a href="#未找到相关的Issues进行评论" class="headerlink" title="未找到相关的Issues进行评论"></a>未找到相关的Issues进行评论</h2><p>描述:请联系xxx初始创建，点击登陆后跳转到首页<br>admin应改为列表的形式，eg: admin: [‘psychic79’]</p><h2 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h2><p>记得清理浏览器缓存。。。</p><p><a href="https://iochen.com/2018/01/06/use-gitalk-in-hexo/" target="_blank" rel="noopener">一些参考</a></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>gitalk</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>看《不能结婚的男人》ing</title>
+    <link href="/2019/10/19/%E7%9C%8B%E3%80%8A%E4%B8%8D%E8%83%BD%E7%BB%93%E5%A9%9A%E7%9A%84%E7%94%B7%E4%BA%BA%E3%80%8B/"/>
+    <url>/2019/10/19/%E7%9C%8B%E3%80%8A%E4%B8%8D%E8%83%BD%E7%BB%93%E5%A9%9A%E7%9A%84%E7%94%B7%E4%BA%BA%E3%80%8B/</url>
+    
+    <content type="html"><![CDATA[<h1 id="看《不能结婚的男人》"><a href="#看《不能结婚的男人》" class="headerlink" title="看《不能结婚的男人》"></a>看《不能结婚的男人》</h1><p>《不能结婚的男人》于是06年上映，是一部平淡的电视剧，没有特别轰轰烈烈的热恋，也没有死去活来的虐恋。很有生活气息却不平庸。它就像是自然生成的一样，像一朵苹果花，是值得一看的电视剧。</p><p>故事发生在日本。主要讲述了独身主义的主人公桑野信介和三位性格迥异的女性–早坂夏美、田村、沢崎摩耶相遇并发生的一系列故事。除此之外，主要角色还有信介助手的村上英治和他女友。</p><p>桑野信介是一个性格孤僻，不善言辞(甚至可以说说话不留情分)，相当独立并以个人为中心的人。他不会主动和人交流，因为他不知道打完招呼之后该怎么继续进行话题，为了避免尴尬，他总是减少和别人的对话。他不会让人进入他的房间。同时，他也是一个固执的人。有一次，为了不让工程延期，即使生病住院，即使有人阻止他出院，他也要偷偷回家坚持完成剩下的工作。然而即使他责任心很强，在业界也是广受好评的室内设计师，却常常因为自己的设计理念和顾客不符而推掉订单，所以工作室收入也不是特别高。(这也时不时引得他的助手村上英治埋怨工资低。。。)固定的，他每天都会在同样的超市买同样的青汁同样的牛奶，一直被询问有没有会员卡需不需要勺子，他也总是说没有会员卡也不需要勺子。在录像带店里面他常常想去成人区看看却常常因为有人在附近走动而不得不中途变道。他每天都会去看金田裕之的博客是不是更新了。他每天回家会放一杯牛奶在身旁，然后坐在沙发上听着交响乐，跟着音乐手舞足蹈得指挥起来。很多细节都能看出他相当地热爱生活。比如在家中他会给自己精心准备饭菜，餐具也得摆放地整整齐齐，喜欢干家务。</p><p>田村是信介的邻居。</p><p>早坂夏美。。</p><p>沢崎摩耶。。</p><p>最后。。。我看完之后看到新出了续集，叫《还是不能结婚的男人》，我就有点慌。。。但是没怎么多想，看了一下简介：</p><blockquote><p>以原作13年后为时间线，“单身贵族” 建筑师桑野信介（阿部宽）依旧过着独自一人的公寓生活，期间虽然和早坂夏美交往，最终还是分手收场。进化到令和的不婚男，是否能遇到命运之人呢？<br>我服了，我想锤死编剧。信介好不容易和夏美在一起了，</p></blockquote>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>观影</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>处理win10不能ping通Ubuntu,反之可以的问题</title>
+    <link href="/2019/10/13/%E5%A4%84%E7%90%86win10%E4%B8%8D%E8%83%BDping%E9%80%9AUbuntu-%E5%8F%8D%E4%B9%8B%E5%8F%AF%E4%BB%A5%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <url>/2019/10/13/%E5%A4%84%E7%90%86win10%E4%B8%8D%E8%83%BDping%E9%80%9AUbuntu-%E5%8F%8D%E4%B9%8B%E5%8F%AF%E4%BB%A5%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    
+    <content type="html"><![CDATA[<h1 id="win10不能ping通Ubuntu18，反之可以的问题"><a href="#win10不能ping通Ubuntu18，反之可以的问题" class="headerlink" title="win10不能ping通Ubuntu18，反之可以的问题"></a>win10不能ping通Ubuntu18，反之可以的问题</h1><p><strong>状况描述：</strong><br>1、win10不能ping通Ubuntu18，但是(VM15pro上的)Ubuntu可以ping通主机。<br>2、虚拟机可以加载网页，可以ping通百度<br>3、网络适配器为NAT</p><p><strong>解决过程：</strong><br>1、检查Ubuntu的防火墙：</p><pre><code>#查看Ubuntu防火墙：sudo ufw status</code></pre><p>结果发现防火墙未启动<br>注：更多关于UFW可参考下面：<br><a href="https://blog.csdn.net/hrayha/article/details/51441669" target="_blank" rel="noopener">ufw常用命令记录</a>和<a href="https://blog.csdn.net/gj3169/article/details/79998411" target="_blank" rel="noopener">ufw教程</a></p><p>2、关闭win10防火墙(控制面板\系统和安全\Windows Defender 防火墙)，然而这并没有什么用。。win10依旧没有ping通。。</p><p>3、尝试NAT换桥接无果。。</p><p>4、最后发现<strong>网络连接</strong>里面没有虚拟网卡(Vmnet01,08,此图为事后)</p><p><img src="/img/3.png" srcset="/img/loading.gif" alt="此图为事后"><br>于是cortana搜索<strong>虚拟网络编辑器</strong>，更改设置，选中网络然后<strong>勾选将主机适配器连接到此网络</strong></p><p>尝试ping一下Ubuntu，ping通，问题解决</p><p>ps:</p><p>最后开启win10防火墙和Ubuntu防火墙，发现相互也能ping通。。就很尴尬，原来这次和防火墙真的一毛钱关系都没有，，，</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>ubuntu</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>python之序列</title>
+    <link href="/2019/10/13/python%E4%B9%8B%E5%BA%8F%E5%88%97/"/>
+    <url>/2019/10/13/python%E4%B9%8B%E5%BA%8F%E5%88%97/</url>
+    
+    <content type="html"><![CDATA[<h1 id="python之序列"><a href="#python之序列" class="headerlink" title="python之序列"></a>python之序列</h1><hr><h2 id="序列类型"><a href="#序列类型" class="headerlink" title="序列类型"></a>序列类型</h2><p>根据序列存储的元素类型分类：</p><ul><li>容器序列：序列里的元素的类型可不相同。以此容器序列使用更灵活。容器类型存放的是元素的引用。常见的有：list, tuple, collections.deque</li><li>扁平序列：序列里的元素类型相同，且均为诸如数字、字符等原子数据，所以扁平序列更紧凑，处理的效率也更高。存放的是值。常见的有：str, bytes, bytearray, memoryview, array.array</li></ul><p>还可以按照是否可改变分为：</p><ul><li><a href="https://docs.python.org/zh-cn/3/library/stdtypes.html?highlight=list#mutable-sequence-types" target="_blank" rel="noopener">可变序列</a>：序列可修改。如：list, collections.deque, bytearray, memoryview, array.array</li><li><a href="https://docs.python.org/zh-cn/3/library/stdtypes.html?highlight=list#immutable-sequence-types" target="_blank" rel="noopener">不可变序列</a>:反之。tuple, str, bytes.不可变序列类型普遍实现而可变序列类型未实现的唯一操作就是对 hash() 内置函数的支持。</li></ul><h2 id="filter-map-reduce-的使用和区分"><a href="#filter-map-reduce-的使用和区分" class="headerlink" title="filter(), map(), reduce()的使用和区分"></a>filter(), map(), reduce()的使用和区分</h2><h3 id="filter-function-iterable"><a href="#filter-function-iterable" class="headerlink" title="filter(function, iterable):"></a>filter(function, iterable):</h3><p>理解为当打算从序列中<strong>筛选</strong>元素并组成新的序列的时候可用该函数。为内置函数。该函数返回迭代器。<br>filter(function, iterable) 相当于一个生成器表达式，当 function 不是 None 的时候为 (item for item in iterable if function(item))；function 是 None 的时候为 (item for item in iterable if item) 。<br>参见官方文档：<a href="https://docs.python.org/zh-cn/3/library/functions.html#filter" target="_blank" rel="noopener">python 3.7.5的filter()函数</a></p><p>举例：</p><pre><code>&gt;&gt;&gt; a = [1, 2, 3, 4, 5]&gt;&gt;&gt; b = filter(lambda x:x&gt;3,a)   #选出大于3的元素&gt;&gt;&gt; print(&#39;b:&#39;,b)b: &lt;filter object at 0x0000025B2B0F5780&gt;   #返回迭代器&gt;&gt;&gt; print(list(b))[4, 5]&gt;&gt;&gt; c = filter(None,a)   #function==None,等价于c = (x for x in a if x)&gt;&gt;&gt; print(c)&lt;filter object at 0x0000025B2B0E0B38&gt;&gt;&gt;&gt; print(list(c))[1, 2, 3, 4, 5]</code></pre><h3 id="map-function-iterable…"><a href="#map-function-iterable…" class="headerlink" title="map(function, iterable…):"></a>map(function, iterable…):</h3><p>这里map是映射的意思(也就好理解了)。传入的一个或多个序列通过<strong>函数映射</strong>得到一个新的序列。为内置函数。该函数返回迭代器。<br>参见官方文档：<a href="https://docs.python.org/zh-cn/3/library/functions.html#map" target="_blank" rel="noopener">python 3.7.5的map()函数</a></p><p>举例：</p><pre><code>&gt;&gt;&gt; a = [1, 2, 3, 4, 5]&gt;&gt;&gt; d = map(lambda x:x+1, a)    #传入一个序列&gt;&gt;&gt; print(d)&lt;map object at 0x0000025B2B0F5080&gt;    #返回迭代器&gt;&gt;&gt; print(list(d))[2, 3, 4, 5, 6]    #映射关系为传入的函数关系&gt;&gt;&gt; e = map(lambda x,y:x+y, a,a)    #传入两个序列，序列个数和传入的函数的参数有关&gt;&gt;&gt; print(list(e))[2, 4, 6, 8, 10]&gt;&gt;&gt; def xx(a, b = 1):    #序列个数和传入的函数的参数有关...     return a+b...&gt;&gt;&gt; a = [1, 2, 3, 4, 5]&gt;&gt;&gt; b = map(xx,a)&gt;&gt;&gt; print(list(b))[2, 3, 4, 5, 6]&gt;&gt;&gt; c = map(xx,a,a)&gt;&gt;&gt; print(list(c))[2, 4, 6, 8, 10]</code></pre><h3 id="functools-reduce-function-iterable-initializer-："><a href="#functools-reduce-function-iterable-initializer-：" class="headerlink" title="functools.reduce(function, iterable[, initializer])："></a>functools.reduce(function, iterable[, initializer])：</h3><p>理解为对一个序列做压缩运算。function必须传递两个参数。对序列里的元素压缩运算在python2里面是内置函数，在python3里面为 functools.reduce()。所以使用时需要<code>from functools import reduce</code>。返回一个值。<br>参见官方文档：<a href="https://docs.python.org/zh-cn/3/library/functools.html#functools.reduce" target="_blank" rel="noopener">python 3.7.5的functools.reduce()函数</a></p><p>大致相当于：</p><pre><code>def reduce(function, iterable, initializer=None):    it = iter(iterable)    if initializer is None:        value = next(it)    else:        value = initializer    for element in it:        value = function(value, element)    return value</code></pre><p>举例：</p><pre><code>&gt;&gt;&gt; from functools import reduce&gt;&gt;&gt; a = [1, 2, 3, 4, 5]&gt;&gt;&gt; b = reduce(lambda x,y:10*x+y, a)    #步骤为((((1*10+2)*10+3)*10+4)*10+5)。先调用前两个值，得到的结果和第三个值一起传入函数，递推，最后返回一个值&gt;&gt;&gt; print(b)12345&gt;&gt;&gt; c = reduce(lambda x,y:x+y, a,b)&gt;&gt;&gt; print(c)12360</code></pre><p>这位朋友关于reduce()的<a href="https://www.cnblogs.com/lonkiss/p/understanding-python-reduce-function.html" target="_blank" rel="noopener">例子</a>更为深入，可参考。</p><h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><h3 id="平时总结："><a href="#平时总结：" class="headerlink" title="平时总结："></a>平时总结：</h3><pre><code>1. my_list[5]，有5个元素。2. my_list[start:stop],元素个数为(stop-start)个。3. my_list[2:5]的取值左闭右开，即下标2取值，下标5不取值。4. 将序列分割成两部分时容易搞错，注意细节，见下：```&gt;&gt;&gt; x = &#39;123456789&#39;&gt;&gt;&gt; x[5:]    #也是左闭右开，因此包含下标5的元素&#39;6789&#39;&gt;&gt;&gt; x[:5]    #牢记左闭右开。。。&#39;12345&#39;```</code></pre><h3 id="x-a-b-c"><a href="#x-a-b-c" class="headerlink" title="x[a:b:c]"></a>x[a:b:c]</h3><p>以<code>x[a:b:c]</code>的形式切片。其意义为切片区域为[a,b),中间的元素间隔为c。也可记忆为x[start:stop:shell]。shell为负表示反向取值。<br>举例：</p><pre><code>&gt;&gt;&gt; x = &#39;123456789&#39;&gt;&gt;&gt; x[::2]        #整个序列切片，间隔为2&#39;13579&#39;&gt;&gt;&gt; x[3::3]       #从索引3开始切片，间隔为3    &#39;47&#39;&gt;&gt;&gt; x[::-1]       #反向取值&#39;987654321&#39;&gt;&gt;&gt; x[::-2]       &#39;97531&#39;&gt;&gt;&gt; x[2::-1]      &#39;321&#39;&gt;&gt;&gt; x[8:1:-2]     #从下标8开始切片，终止于下标1，反向切片，间隔为2&#39;9753&#39;</code></pre><h3 id="多维切片"><a href="#多维切片" class="headerlink" title="多维切片"></a>多维切片</h3><p>举例：</p><pre><code>&gt;&gt;&gt; import numpy&gt;&gt;&gt; a = numpy.arange(9)&gt;&gt;&gt; aarray([0, 1, 2, 3, 4, 5, 6, 7, 8])&gt;&gt;&gt; a.shape(9,)&gt;&gt;&gt; a.shape = 3,3       #reshape成二维的数组&gt;&gt;&gt; aarray([[0, 1, 2],       [3, 4, 5],       [6, 7, 8]])&gt;&gt;&gt; a[1]array([3, 4, 5])&gt;&gt;&gt; a[1,1]              4&gt;&gt;&gt; a[:,1]array([1, 4, 7])&gt;&gt;&gt; a[0]array([0, 1, 2])&gt;&gt;&gt; a[0,:]array([0, 1, 2])</code></pre><h2 id="list-sort-和sorted"><a href="#list-sort-和sorted" class="headerlink" title="list.sort()和sorted()"></a>list.sort()和sorted()</h2><p>sort()就地修改对象，故返回None(符合就地修改的原则)。<br>sorted()返回新建的对象。是稳定排序。<br>两个函数均有reverse和key关键字。reverse为布尔值，默认等于False，此时升序排列。key默认为None，此时比较列表原有的值。接受带有一个参数的函数，如key=len,key=str.lower。如下：</p><pre><code>&gt;&gt;&gt; a = [&#39;aaa&#39;, &#39;c&#39;, &#39;bb&#39;, &#39;dddd&#39;]&gt;&gt;&gt; a.sort()&gt;&gt;&gt; a[&#39;aaa&#39;, &#39;bb&#39;, &#39;c&#39;, &#39;dddd&#39;]&gt;&gt;&gt; a.sort(key = len)&gt;&gt;&gt; a[&#39;c&#39;, &#39;bb&#39;, &#39;aaa&#39;, &#39;dddd&#39;]</code></pre><h2 id="bisect-和insort"><a href="#bisect-和insort" class="headerlink" title="bisect()和insort()"></a>bisect()和insort()</h2><p>两个函数均位于标准库模块bisect,这个模块对<strong>有序列表</strong>提供了支持，使得他们可以在插入新数据仍然保持有序。内部由二分查找算法实现。<a href="https://github.com/python/cpython/blob/3.7/Lib/bisect.py" target="_blank" rel="noopener">源码</a></p><h3 id="bisect-a-x-lo-0-hi-len-a"><a href="#bisect-a-x-lo-0-hi-len-a" class="headerlink" title="bisect(a, x, lo=0, hi=len(a))"></a>bisect(a, x, lo=0, hi=len(a))</h3><p>也叫bisect_right()是在已排好序的基础上操作的。lo和hi划定搜索的范围。该函数返回已存在元素的右侧位置，不改变原列表。文档样例：</p><pre><code>&gt;&gt;&gt; def grade(score, breakpoints=[60, 70, 80, 90], grades=&#39;FDCBA&#39;):...     i = bisect(breakpoints, score)...     return grades[i]...&gt;&gt;&gt; [grade(score) for score in [33, 99, 77, 70, 89, 90, 100]][&#39;F&#39;, &#39;A&#39;, &#39;C&#39;, &#39;C&#39;, &#39;B&#39;, &#39;A&#39;, &#39;A&#39;]</code></pre><p>另一和bisect()类似的函数叫bisect_left()，区别在于返回的是已存在元素的左侧位置。</p><p>###insort(a, x, lo=0, hi=len(a))<br>在排好序列之后用。插入x到a并使a保持升序(不会给原列表排序，仅使x在其中局部升序排列，但原序列因排好次序，故插入后整体也是升序)。</p><pre><code>&gt;&gt;&gt; import bisect&gt;&gt;&gt; a = [1, 6, 7, 9, 5]&gt;&gt;&gt; bisect.insort(a, 4)&gt;&gt;&gt; a[1, 4, 6, 7, 9, 5]        #并未排序，只是保持局部次序未被破坏&gt;&gt;&gt; a.sort()&gt;&gt;&gt; a[1, 4, 5, 6, 7, 9]&gt;&gt;&gt; del a[5]&gt;&gt;&gt; a[1, 4, 5, 6, 7]&gt;&gt;&gt; bisect.insort(a, 3)&gt;&gt;&gt; a[1, 3, 4, 5, 6, 7]&gt;&gt;&gt; bisect.insort_left(a,2)&gt;&gt;&gt; a[1, 2, 3, 4, 5, 6, 7]&gt;&gt;&gt; a = [3, 1, 5, 9, 7]        #打乱次序的列表使用insort&gt;&gt;&gt; bisect.insort(a, 2)&gt;&gt;&gt; a[3, 1, 2, 5, 9, 7]&gt;&gt;&gt; bisect.insort(a, 4)&gt;&gt;&gt; a[3, 1, 2, 4, 5, 9, 7]</code></pre><p>同样的，insort()也有一个类似功能的函数insort_left()，返回的是左侧。</p><h2 id="list-n的注意事项"><a href="#list-n的注意事项" class="headerlink" title="list * n的注意事项"></a>list * n的注意事项</h2><p>当序列list的元素里面有对可变对象的引用的时候这样用可能出错。见文档：</p><blockquote><p>小于 0 的 n 值会被当作 0 来处理 (生成一个与 s 同类型的空序列)。 请注意序列 s 中的项并不会被拷贝；它们会被多次引用。 例如:</p></blockquote><pre><code>&gt;&gt;&gt;&gt;&gt;&gt; lists = [[]] * 3&gt;&gt;&gt; lists[[], [], []]&gt;&gt;&gt; lists[0].append(3)&gt;&gt;&gt; lists[[3], [3], [3]]</code></pre><blockquote><p>具体的原因在于 [[]] 是一个包含了一个空列表的单元素列表，所以 [[]] * 3 结果中的三个元素都是对这一个空列表的引用。 修改 lists 中的任何一个元素实际上都是对这一个空列表的修改。 </p></blockquote><p>所以这里推荐的做法是：</p><pre><code>&gt;&gt;&gt; lists = [[] for _ in range(3)]&gt;&gt;&gt; lists[[], [], []]&gt;&gt;&gt; lists[0].append(3)&gt;&gt;&gt; lists[[3], [], []]</code></pre><p>用循环来写看起来不够简洁，这里就不写了。</p><h2 id="array-array-typecode-initializer"><a href="#array-array-typecode-initializer" class="headerlink" title="array.array(typecode[, initializer])"></a><a href="https://docs.python.org/zh-cn/3/library/array.html?highlight=array#module-array" target="_blank" rel="noopener">array.array(typecode[, initializer])</a></h2><p>扁平序列类型，数组。它和列表的处理方法类似，但是对元素有限制(元素更单一，在创建对象时要声明类型码)，因此处理更高效。常用的类型码如’b’表示在底层的C语言存放的是unsigned char,python类型为int，所以只能存放一个字节大小的整数，’d’表示python类型float。</p><h2 id="collections-deque-iterable-maxlen"><a href="#collections-deque-iterable-maxlen" class="headerlink" title="collections.deque(iterable[, maxlen])"></a><a href="https://docs.python.org/zh-cn/3/library/collections.html?highlight=collections%20deque#deque-objects" target="_blank" rel="noopener">collections.deque(iterable[, maxlen])</a></h2><p>容器类型，双向队列。对进出栈有优化。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>读《认知天性》</title>
+    <link href="/2019/10/13/%E8%AF%BB%E3%80%8A%E8%AE%A4%E7%9F%A5%E5%A4%A9%E6%80%A7%E3%80%8B/"/>
+    <url>/2019/10/13/%E8%AF%BB%E3%80%8A%E8%AE%A4%E7%9F%A5%E5%A4%A9%E6%80%A7%E3%80%8B/</url>
+    
+    <content type="html"><![CDATA[<h1 id="读《认知天性》"><a href="#读《认知天性》" class="headerlink" title="读《认知天性》"></a>读《认知天性》</h1><p>越来越觉得自己学习速度变慢了，是时候开始做出改变了。</p><hr><p>由于该书的章节内容有重复(序言也提到，这样做是把观点和方法复现到书体本身，从而加强阅读的效果)，故不分章节来叙述。叙述顺序和阅读顺序基本一致。<br>由于只是做一个简单记录和概述，故仅记录一下书中的一些观点和过去实验的结论。所以不会将书中的所有内容一一概述，也不会将注释和叙述用的示例附上，也不会将书中提到的实验写出来。</p><h2 id="实验得到的结论-作者的观点"><a href="#实验得到的结论-作者的观点" class="headerlink" title="实验得到的结论/作者的观点"></a>实验得到的结论/作者的观点</h2><ul><li><h4 id="知识要做到能随时调用"><a href="#知识要做到能随时调用" class="headerlink" title="知识要做到能随时调用"></a>知识要做到能随时调用</h4><ul><li>关于这个我不置可否，因为现在很多知识是只需要在需要的时候上网搜索的，就像调用API一样。我们不可能熟练掌握所有见过的知识，否则学习成本过大，也会导致失去平衡的。</li></ul></li><li><h4 id="耗费心血的学习才是深层次的"><a href="#耗费心血的学习才是深层次的" class="headerlink" title="耗费心血的学习才是深层次的"></a>耗费心血的学习才是深层次的</h4><ul><li>由于人是天生懒惰，所以轻松学习获得的知识更容易遗忘(我的一位老师说过：现在我们主要通过<strong>刻意学习获取知识</strong>、提升技能，和这个说法不谋而合)。同时书中提到一个这样的说法：当学习被打断之后再继续的时候会发现检索难度加大、知识更陌生，以此认为学习效果不佳，但事实相反–这样的效果却更好。但是我认为主动打断自己的学习过程这样不好。</li></ul></li><li><h4 id="形成心智模型："><a href="#形成心智模型：" class="headerlink" title="形成心智模型："></a>形成心智模型：</h4><ul><li>理解为通过对知识的认知，了解它的<strong>特征</strong>并建立对策，以此在脑海中建立对知识对象的模型。</li><li>例如做题时，你会考虑它涉及的知识点，可能重视的条件，和相关的思路（即排除其他干扰，只关注要害因素）以此来确定你解决问题的方法。这就是经验丰富者的优势。可见，这需要对所学对象深入了解，做到目无全牛，才可能形成相应的心智模型。</li></ul></li><li><h4 id="检索式训练获得的学习效果更好"><a href="#检索式训练获得的学习效果更好" class="headerlink" title="检索式训练获得的学习效果更好"></a>检索式训练获得的学习效果更好</h4><ul><li><strong>划重点</strong></li><li>可通过回想，建立知识体系(有点难度。但是很有效，实在想不起来的时候就可以直接看知识点了)。</li><li>可通过自我测试来进行检索式训练：比如做题。。比如自己考虑知识点的相关问题。</li><li>直接参加考试。。。(那样还可以痛定思痛，耗费心血痛苦学习，效果肯定上乘(滑稽))</li><li>重复多次检索才能达到最佳效果，甚至使学习到的技能/知识成为条件反射。</li><li>有间隔地检索。例如记单词时，首次学习某单词后，延迟检索练习的时间，期间插入20个词进行记忆，记住这个词的效果要好于直接重复。</li><li>心理学家把检索的带来的影响称为测验效应或者检索-练习效应。</li></ul></li><li><h4 id="反复阅读不可取，间隔学习是王道"><a href="#反复阅读不可取，间隔学习是王道" class="headerlink" title="反复阅读不可取，间隔学习是王道"></a>反复阅读不可取，间隔学习是王道</h4><ul><li>解释为我们把反复阅读之后获得的流利感当作是熟练掌握知识，然而这不过是我们认知心理的一种假象。其唯一的好处就是反复阅读和重复练习的短期效应很好，但是遗忘的速度较快。间隔学习在长期学习中有比较明显的优势，并且相当推崇每隔一段时间测试一次这种方法。</li><li>人家做实验的结论，咱也不知道为什么，咱也不敢问。。</li></ul></li><li><h4 id="知识多不等于学习能力强，但却是学习能力建立的土壤"><a href="#知识多不等于学习能力强，但却是学习能力建立的土壤" class="headerlink" title="知识多不等于学习能力强，但却是学习能力建立的土壤"></a>知识多不等于学习能力强，但却是学习能力建立的土壤</h4></li><li><h4 id="反思是更高级的检索"><a href="#反思是更高级的检索" class="headerlink" title="反思是更高级的检索"></a>反思是更高级的检索</h4><ul><li>可以检索并整合所学知识和技能。</li><li>可以让行动具化形成步骤(甚至可以把整合的步骤记录下来),它们会在关键时刻派上用场。</li><li>可以增加自己的感悟。</li><li>可以预演下一次不同的处理方法。</li></ul></li><li><h4 id="延迟反馈"><a href="#延迟反馈" class="headerlink" title="延迟反馈"></a>延迟反馈</h4><ul><li>测验过后对错误答案做出更正–即做出反馈–也能增强记忆。并且延迟反馈效果比立即反馈效果好。</li><li>例如：开卷考试和闭卷考试作比较，从短期来看，显然开卷的学生获得的分数较高，但是对于完成闭卷考试并获得纠正反馈的学生，他们第二次的考试更为出色。</li></ul></li><li><h4 id="自测"><a href="#自测" class="headerlink" title="自测"></a>自测</h4><ul><li>即自己主动检索，让自己成为一个主动学习者。</li><li>更能准确得评估自己的水平。</li></ul></li></ul>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>阅读笔记/随想</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>django的一些记录</title>
+    <link href="/2019/10/13/django%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%B0%E5%BD%95/"/>
+    <url>/2019/10/13/django%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%B0%E5%BD%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="django的一些记录"><a href="#django的一些记录" class="headerlink" title="django的一些记录"></a>django的一些记录</h1><h2 id="为了避免以后踩坑-踩坑出不了坑-还是记录一下"><a href="#为了避免以后踩坑-踩坑出不了坑-还是记录一下" class="headerlink" title="为了避免以后踩坑/踩坑出不了坑,还是记录一下"></a>为了避免以后踩坑/踩坑出不了坑,还是记录一下</h2><h2 id="ImageField"><a href="#ImageField" class="headerlink" title="ImageField"></a>ImageField</h2><p>ImageField用于models.py定义模型,下面是它的一些注意事项:</p><p><strong>需要下载Pillow:</strong></p><p>Pillow是python的一个图像处理库,下载仅需<code>pip install Pillow</code></p><p><strong>配置路径:</strong></p><p>如果不配置路径的话,上传的图片会保存在项目的根目录里面(即所创建的app里面),那样会破坏文件结构,不美观也不易处理.<br>django文档提到:</p><blockquote><p>在你的 setting 文件中，你需要定义：setting: MEDIA_ROOT 作为 Django 存储上传文件目录的完整路径。（为了提高性能，这些文件不会储存在数据库中）定义： setting: MEDIA_URL 作为该目录的基本公共 URL</p></blockquote><p>因此可按如下配置:</p><pre><code>MEDIA_ROOT = os.path.join(BASE_DIR, &#39;media&#39;)    MEDIA_URL = &#39;/media/&#39;                           #一定记得末尾的slash</code></pre><p><strong>在ImageField中设置upload_to:</strong></p><p>通过设置upload_to来设置一个在MEDIA_URL的子目录用来上传文件。eg:</p><pre><code>img = models.ImageField(upload_to = &#39;images/&#39;)    </code></pre><p>ps:upload_to一定记得不能使用绝对路径否则会报错:<br><code>&#39;upload_to&#39; argument must be a relative path, not an absolute path.HINT: Remove the leading slash.</code></p><p>设置完成之后,上传的图片会保存在media/img中</p><p><strong>改动项目的urls.py</strong></p><pre><code>from django.conf.urls.static import staticfrom django.conf import settingsurlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)</code></pre><p><strong>使用上传的图片</strong><br>eg:<code>&lt;img src=&quot;&quot;&gt;    #这里是双大括号，但是莫名显示有问题</code>  </p><h2 id="objects-get-和objects-filter-的一些区别"><a href="#objects-get-和objects-filter-的一些区别" class="headerlink" title="objects.get()和objects.filter()的一些区别"></a>objects.get()和objects.filter()的一些区别</h2><p>通过shell来比较:</p><pre><code>&gt;&gt;&gt; from pages.models import Content&gt;&gt;&gt; o = Content.objects.get(id = 1)&gt;&gt;&gt; o&lt;Content: home&gt;&gt;&gt;&gt; type(o)&lt;class &#39;pages.models.Content&#39;&gt;                  #可见通过get()获得的对象为模型的对象&gt;&gt;&gt; o.name&#39;home&#39;&gt;&gt;&gt; oo = Content.objects.filter(id = 1)&gt;&gt;&gt; oo&lt;QuerySet [&lt;Content: home&gt;]&gt;&gt;&gt;&gt; type(oo)&lt;class &#39;django.db.models.query.QuerySet&#39;&gt;        #可见通过filter()得到的是查询集对象&gt;&gt;&gt; oo.nameTraceback (most recent call last):  File &quot;&lt;console&gt;&quot;, line 1, in &lt;module&gt;AttributeError: &#39;QuerySet&#39; object has no attribute &#39;name&#39;&gt;&gt;&gt; oo[0]                                        #查询集对象为列表对象,元素为models里面的对象&lt;Content: home&gt;</code></pre><p>所以,我们不能像使用get()得到的对象一样直接使用object_name.attribute_name,而应像对待列表对象一样处理并使用它.因此一般迭代时使用filter()得到的对象比较方便.</p><h2 id="删除数据库对象时django默认的数据库sqlite3的id只会增加不会重复使用"><a href="#删除数据库对象时django默认的数据库sqlite3的id只会增加不会重复使用" class="headerlink" title="删除数据库对象时django默认的数据库sqlite3的id只会增加不会重复使用"></a>删除数据库对象时django默认的数据库sqlite3的id只会增加不会重复使用</h2><p>即假如数据库里有一个对象,删除后新建一个对象,它的id为2.具体原因可见:<br><a href="https://stackoverflow.com/questions/9984196/postgresql-gapless-sequences" target="_blank" rel="noopener">stack overflow</a></p><p>总结为:</p><p>1.提高效率(保持id顺序需要消耗资源)</p><p>2.保持id顺序意义不大,因为id主要是为了区别对象,使用id仅需保持唯一性即可</p><p>3.序列之间存在间隙以允许同时插入。尝试避免间隔或重复使用已删除的ID会造成可怕的性能问题。</p><h2 id="在django模板使用列表的元素"><a href="#在django模板使用列表的元素" class="headerlink" title="在django模板使用列表的元素"></a>在django模板使用列表的元素</h2><p>有时候我们会直接使用objects.filter()或objects.all()获取查询集并传参到模板,当我们想直接使用传入的查询集的某一元素时,并非采用.[下标],而是直接.下标,如下:</p><pre><code>&lt;img src=&quot;{{banners.0.logo.url}}&quot;&gt;            #使用banners的第一个元素里的logo属性，这里是双大括号，但是莫名显示有问题</code></pre><h2 id=""><a href="#" class="headerlink" title=""></a></h2>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>django</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  
+</search>

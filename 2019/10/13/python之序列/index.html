@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="psychic79">
+  <meta name="keywords" content="blog">
+  <title>python之序列-psychic79&#39;s blog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>psychic79's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/default-post.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  星期日, 十月 13日 2019, 11:43 晚上
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    2.3k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      10 分钟
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <h1 id="python之序列"><a href="#python之序列" class="headerlink" title="python之序列"></a>python之序列</h1><hr>
+<h2 id="序列类型"><a href="#序列类型" class="headerlink" title="序列类型"></a>序列类型</h2><p>根据序列存储的元素类型分类：</p>
+<ul>
+<li>容器序列：序列里的元素的类型可不相同。以此容器序列使用更灵活。容器类型存放的是元素的引用。常见的有：list, tuple, collections.deque</li>
+<li>扁平序列：序列里的元素类型相同，且均为诸如数字、字符等原子数据，所以扁平序列更紧凑，处理的效率也更高。存放的是值。常见的有：str, bytes, bytearray, memoryview, array.array</li>
+</ul>
+<p>还可以按照是否可改变分为：</p>
+<ul>
+<li><a href="https://docs.python.org/zh-cn/3/library/stdtypes.html?highlight=list#mutable-sequence-types" target="_blank" rel="noopener">可变序列</a>：序列可修改。如：list, collections.deque, bytearray, memoryview, array.array</li>
+<li><a href="https://docs.python.org/zh-cn/3/library/stdtypes.html?highlight=list#immutable-sequence-types" target="_blank" rel="noopener">不可变序列</a>:反之。tuple, str, bytes.不可变序列类型普遍实现而可变序列类型未实现的唯一操作就是对 hash() 内置函数的支持。</li>
+</ul>
+<h2 id="filter-map-reduce-的使用和区分"><a href="#filter-map-reduce-的使用和区分" class="headerlink" title="filter(), map(), reduce()的使用和区分"></a>filter(), map(), reduce()的使用和区分</h2><h3 id="filter-function-iterable"><a href="#filter-function-iterable" class="headerlink" title="filter(function, iterable):"></a>filter(function, iterable):</h3><p>理解为当打算从序列中<strong>筛选</strong>元素并组成新的序列的时候可用该函数。为内置函数。该函数返回迭代器。<br>filter(function, iterable) 相当于一个生成器表达式，当 function 不是 None 的时候为 (item for item in iterable if function(item))；function 是 None 的时候为 (item for item in iterable if item) 。<br>参见官方文档：<a href="https://docs.python.org/zh-cn/3/library/functions.html#filter" target="_blank" rel="noopener">python 3.7.5的filter()函数</a></p>
+<p>举例：</p>
+<pre><code>&gt;&gt;&gt; a = [1, 2, 3, 4, 5]
+&gt;&gt;&gt; b = filter(lambda x:x&gt;3,a)   #选出大于3的元素
+&gt;&gt;&gt; print(&#39;b:&#39;,b)
+b: &lt;filter object at 0x0000025B2B0F5780&gt;   #返回迭代器
+&gt;&gt;&gt; print(list(b))
+[4, 5]
+&gt;&gt;&gt; c = filter(None,a)   #function==None,等价于c = (x for x in a if x)
+&gt;&gt;&gt; print(c)
+&lt;filter object at 0x0000025B2B0E0B38&gt;
+&gt;&gt;&gt; print(list(c))
+[1, 2, 3, 4, 5]</code></pre><h3 id="map-function-iterable…"><a href="#map-function-iterable…" class="headerlink" title="map(function, iterable…):"></a>map(function, iterable…):</h3><p>这里map是映射的意思(也就好理解了)。传入的一个或多个序列通过<strong>函数映射</strong>得到一个新的序列。为内置函数。该函数返回迭代器。<br>参见官方文档：<a href="https://docs.python.org/zh-cn/3/library/functions.html#map" target="_blank" rel="noopener">python 3.7.5的map()函数</a></p>
+<p>举例：</p>
+<pre><code>&gt;&gt;&gt; a = [1, 2, 3, 4, 5]
+&gt;&gt;&gt; d = map(lambda x:x+1, a)    #传入一个序列
+&gt;&gt;&gt; print(d)
+&lt;map object at 0x0000025B2B0F5080&gt;    #返回迭代器
+&gt;&gt;&gt; print(list(d))
+[2, 3, 4, 5, 6]    #映射关系为传入的函数关系
+&gt;&gt;&gt; e = map(lambda x,y:x+y, a,a)    #传入两个序列，序列个数和传入的函数的参数有关
+&gt;&gt;&gt; print(list(e))
+[2, 4, 6, 8, 10]
+&gt;&gt;&gt; def xx(a, b = 1):    #序列个数和传入的函数的参数有关
+...     return a+b
+...
+&gt;&gt;&gt; a = [1, 2, 3, 4, 5]
+&gt;&gt;&gt; b = map(xx,a)
+&gt;&gt;&gt; print(list(b))
+[2, 3, 4, 5, 6]
+&gt;&gt;&gt; c = map(xx,a,a)
+&gt;&gt;&gt; print(list(c))
+[2, 4, 6, 8, 10]</code></pre><h3 id="functools-reduce-function-iterable-initializer-："><a href="#functools-reduce-function-iterable-initializer-：" class="headerlink" title="functools.reduce(function, iterable[, initializer])："></a>functools.reduce(function, iterable[, initializer])：</h3><p>理解为对一个序列做压缩运算。function必须传递两个参数。对序列里的元素压缩运算在python2里面是内置函数，在python3里面为 functools.reduce()。所以使用时需要<code>from functools import reduce</code>。返回一个值。<br>参见官方文档：<a href="https://docs.python.org/zh-cn/3/library/functools.html#functools.reduce" target="_blank" rel="noopener">python 3.7.5的functools.reduce()函数</a></p>
+<p>大致相当于：</p>
+<pre><code>def reduce(function, iterable, initializer=None):
+    it = iter(iterable)
+    if initializer is None:
+        value = next(it)
+    else:
+        value = initializer
+    for element in it:
+        value = function(value, element)
+    return value</code></pre><p>举例：</p>
+<pre><code>&gt;&gt;&gt; from functools import reduce
+&gt;&gt;&gt; a = [1, 2, 3, 4, 5]
+&gt;&gt;&gt; b = reduce(lambda x,y:10*x+y, a)    #步骤为((((1*10+2)*10+3)*10+4)*10+5)。先调用前两个值，得到的结果和第三个值一起传入函数，递推，最后返回一个值
+&gt;&gt;&gt; print(b)
+12345
+&gt;&gt;&gt; c = reduce(lambda x,y:x+y, a,b)
+&gt;&gt;&gt; print(c)
+12360</code></pre><p>这位朋友关于reduce()的<a href="https://www.cnblogs.com/lonkiss/p/understanding-python-reduce-function.html" target="_blank" rel="noopener">例子</a>更为深入，可参考。</p>
+<h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><h3 id="平时总结："><a href="#平时总结：" class="headerlink" title="平时总结："></a>平时总结：</h3><pre><code>1. my_list[5]，有5个元素。
+2. my_list[start:stop],元素个数为(stop-start)个。
+3. my_list[2:5]的取值左闭右开，即下标2取值，下标5不取值。
+4. 将序列分割成两部分时容易搞错，注意细节，见下：
+```
+&gt;&gt;&gt; x = &#39;123456789&#39;
+&gt;&gt;&gt; x[5:]    #也是左闭右开，因此包含下标5的元素
+&#39;6789&#39;
+&gt;&gt;&gt; x[:5]    #牢记左闭右开。。。
+&#39;12345&#39;
+```</code></pre><h3 id="x-a-b-c"><a href="#x-a-b-c" class="headerlink" title="x[a:b:c]"></a>x[a:b:c]</h3><p>以<code>x[a:b:c]</code>的形式切片。其意义为切片区域为[a,b),中间的元素间隔为c。也可记忆为x[start:stop:shell]。shell为负表示反向取值。<br>举例：</p>
+<pre><code>&gt;&gt;&gt; x = &#39;123456789&#39;
+&gt;&gt;&gt; x[::2]        #整个序列切片，间隔为2
+&#39;13579&#39;
+&gt;&gt;&gt; x[3::3]       #从索引3开始切片，间隔为3    
+&#39;47&#39;
+&gt;&gt;&gt; x[::-1]       #反向取值
+&#39;987654321&#39;
+&gt;&gt;&gt; x[::-2]       
+&#39;97531&#39;
+&gt;&gt;&gt; x[2::-1]      
+&#39;321&#39;
+&gt;&gt;&gt; x[8:1:-2]     #从下标8开始切片，终止于下标1，反向切片，间隔为2
+&#39;9753&#39;</code></pre><h3 id="多维切片"><a href="#多维切片" class="headerlink" title="多维切片"></a>多维切片</h3><p>举例：</p>
+<pre><code>&gt;&gt;&gt; import numpy
+&gt;&gt;&gt; a = numpy.arange(9)
+&gt;&gt;&gt; a
+array([0, 1, 2, 3, 4, 5, 6, 7, 8])
+&gt;&gt;&gt; a.shape
+(9,)
+&gt;&gt;&gt; a.shape = 3,3       #reshape成二维的数组
+&gt;&gt;&gt; a
+array([[0, 1, 2],
+       [3, 4, 5],
+       [6, 7, 8]])
+&gt;&gt;&gt; a[1]
+array([3, 4, 5])
+&gt;&gt;&gt; a[1,1]              
+4
+&gt;&gt;&gt; a[:,1]
+array([1, 4, 7])
+&gt;&gt;&gt; a[0]
+array([0, 1, 2])
+&gt;&gt;&gt; a[0,:]
+array([0, 1, 2])</code></pre><h2 id="list-sort-和sorted"><a href="#list-sort-和sorted" class="headerlink" title="list.sort()和sorted()"></a>list.sort()和sorted()</h2><p>sort()就地修改对象，故返回None(符合就地修改的原则)。<br>sorted()返回新建的对象。是稳定排序。<br>两个函数均有reverse和key关键字。reverse为布尔值，默认等于False，此时升序排列。key默认为None，此时比较列表原有的值。接受带有一个参数的函数，如key=len,key=str.lower。如下：</p>
+<pre><code>&gt;&gt;&gt; a = [&#39;aaa&#39;, &#39;c&#39;, &#39;bb&#39;, &#39;dddd&#39;]
+&gt;&gt;&gt; a.sort()
+&gt;&gt;&gt; a
+[&#39;aaa&#39;, &#39;bb&#39;, &#39;c&#39;, &#39;dddd&#39;]
+&gt;&gt;&gt; a.sort(key = len)
+&gt;&gt;&gt; a
+[&#39;c&#39;, &#39;bb&#39;, &#39;aaa&#39;, &#39;dddd&#39;]</code></pre><h2 id="bisect-和insort"><a href="#bisect-和insort" class="headerlink" title="bisect()和insort()"></a>bisect()和insort()</h2><p>两个函数均位于标准库模块bisect,这个模块对<strong>有序列表</strong>提供了支持，使得他们可以在插入新数据仍然保持有序。内部由二分查找算法实现。<a href="https://github.com/python/cpython/blob/3.7/Lib/bisect.py" target="_blank" rel="noopener">源码</a></p>
+<h3 id="bisect-a-x-lo-0-hi-len-a"><a href="#bisect-a-x-lo-0-hi-len-a" class="headerlink" title="bisect(a, x, lo=0, hi=len(a))"></a>bisect(a, x, lo=0, hi=len(a))</h3><p>也叫bisect_right()是在已排好序的基础上操作的。lo和hi划定搜索的范围。该函数返回已存在元素的右侧位置，不改变原列表。文档样例：</p>
+<pre><code>&gt;&gt;&gt; def grade(score, breakpoints=[60, 70, 80, 90], grades=&#39;FDCBA&#39;):
+...     i = bisect(breakpoints, score)
+...     return grades[i]
+...
+&gt;&gt;&gt; [grade(score) for score in [33, 99, 77, 70, 89, 90, 100]]
+[&#39;F&#39;, &#39;A&#39;, &#39;C&#39;, &#39;C&#39;, &#39;B&#39;, &#39;A&#39;, &#39;A&#39;]</code></pre><p>另一和bisect()类似的函数叫bisect_left()，区别在于返回的是已存在元素的左侧位置。</p>
+<p>###insort(a, x, lo=0, hi=len(a))<br>在排好序列之后用。插入x到a并使a保持升序(不会给原列表排序，仅使x在其中局部升序排列，但原序列因排好次序，故插入后整体也是升序)。</p>
+<pre><code>&gt;&gt;&gt; import bisect
+&gt;&gt;&gt; a = [1, 6, 7, 9, 5]
+&gt;&gt;&gt; bisect.insort(a, 4)
+&gt;&gt;&gt; a
+[1, 4, 6, 7, 9, 5]        #并未排序，只是保持局部次序未被破坏
+&gt;&gt;&gt; a.sort()
+&gt;&gt;&gt; a
+[1, 4, 5, 6, 7, 9]
+&gt;&gt;&gt; del a[5]
+&gt;&gt;&gt; a
+[1, 4, 5, 6, 7]
+&gt;&gt;&gt; bisect.insort(a, 3)
+&gt;&gt;&gt; a
+[1, 3, 4, 5, 6, 7]
+&gt;&gt;&gt; bisect.insort_left(a,2)
+&gt;&gt;&gt; a
+[1, 2, 3, 4, 5, 6, 7]
+&gt;&gt;&gt; a = [3, 1, 5, 9, 7]        #打乱次序的列表使用insort
+&gt;&gt;&gt; bisect.insort(a, 2)
+&gt;&gt;&gt; a
+[3, 1, 2, 5, 9, 7]
+&gt;&gt;&gt; bisect.insort(a, 4)
+&gt;&gt;&gt; a
+[3, 1, 2, 4, 5, 9, 7]</code></pre><p>同样的，insort()也有一个类似功能的函数insort_left()，返回的是左侧。</p>
+<h2 id="list-n的注意事项"><a href="#list-n的注意事项" class="headerlink" title="list * n的注意事项"></a>list * n的注意事项</h2><p>当序列list的元素里面有对可变对象的引用的时候这样用可能出错。见文档：</p>
+<blockquote>
+<p>小于 0 的 n 值会被当作 0 来处理 (生成一个与 s 同类型的空序列)。 请注意序列 s 中的项并不会被拷贝；它们会被多次引用。 例如:</p>
+</blockquote>
+<pre><code>&gt;&gt;&gt;
+&gt;&gt;&gt; lists = [[]] * 3
+&gt;&gt;&gt; lists
+[[], [], []]
+&gt;&gt;&gt; lists[0].append(3)
+&gt;&gt;&gt; lists
+[[3], [3], [3]]</code></pre><blockquote>
+<p>具体的原因在于 [[]] 是一个包含了一个空列表的单元素列表，所以 [[]] * 3 结果中的三个元素都是对这一个空列表的引用。 修改 lists 中的任何一个元素实际上都是对这一个空列表的修改。 </p>
+</blockquote>
+<p>所以这里推荐的做法是：</p>
+<pre><code>&gt;&gt;&gt; lists = [[] for _ in range(3)]
+&gt;&gt;&gt; lists
+[[], [], []]
+&gt;&gt;&gt; lists[0].append(3)
+&gt;&gt;&gt; lists
+[[3], [], []]</code></pre><p>用循环来写看起来不够简洁，这里就不写了。</p>
+<h2 id="array-array-typecode-initializer"><a href="#array-array-typecode-initializer" class="headerlink" title="array.array(typecode[, initializer])"></a><a href="https://docs.python.org/zh-cn/3/library/array.html?highlight=array#module-array" target="_blank" rel="noopener">array.array(typecode[, initializer])</a></h2><p>扁平序列类型，数组。它和列表的处理方法类似，但是对元素有限制(元素更单一，在创建对象时要声明类型码)，因此处理更高效。常用的类型码如’b’表示在底层的C语言存放的是unsigned char,python类型为int，所以只能存放一个字节大小的整数，’d’表示python类型float。</p>
+<h2 id="collections-deque-iterable-maxlen"><a href="#collections-deque-iterable-maxlen" class="headerlink" title="collections.deque(iterable[, maxlen])"></a><a href="https://docs.python.org/zh-cn/3/library/collections.html?highlight=collections%20deque#deque-objects" target="_blank" rel="noopener">collections.deque(iterable[, maxlen])</a></h2><p>容器类型，双向队列。对进出栈有优化。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/python">python</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+      <br><br>
+      
+      
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.11.1/js/md5.min.js"></script>
+  <script type="text/javascript">
+    var gitalk = new Gitalk({
+      clientID: '7f170c26d04b27b42d44',
+      clientSecret: '1f5165c8fd44816b712fad5ba9da73465baa614',
+      repo: 'psychic79.github.io',
+      owner: 'psychic79',
+      admin: '['psychic79']',
+      id: md5(location.pathname),
+      language: 'zh-CN',
+      perPage: 15,
+      pagerDirection: 'last',
+      createIssueManually: 'true',
+      distractionFreeMode: 'false'
+    });
+
+    gitalk.render('gitalk-container')
+  </script>
+
+
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?a242e488b14422943bd9e80f2d94ed22";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "python之序列&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+  
+    <script type="text/javascript">
+      //定义获取词语下标
+      var a_idx = 0;
+      jQuery(document).ready(function ($) {
+        //点击body时触发事件
+        $("body").click(function (e) {
+          //需要显示的词语
+          var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正", "法治", "爱国", "敬业", "诚信", "友善");
+          //设置词语给span标签
+          var $i = $("<span/>").text(a[a_idx]);
+          //下标等于原来下标+1  余 词语总数
+          a_idx = (a_idx + 1) % a.length;
+          //获取鼠标指针的位置，分别相对于文档的左和右边缘。
+          //获取x和y的指针坐标
+          var x = e.pageX, y = e.pageY;
+          //在鼠标的指针的位置给$i定义的span标签添加css样式
+          $i.css({
+            "z-index": 999,
+            "top": y - 20,
+            "left": x,
+            "position": "absolute",
+            "font-weight": "bold",
+            "color": rand_color()
+          });
+          // 随机颜色
+          function rand_color() {
+            return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+          }
+          //在body添加这个标签
+          $("body").append($i);
+          //animate() 方法执行 CSS 属性集的自定义动画。
+          //该方法通过CSS样式将元素从一个状态改变为另一个状态。CSS属性值是逐渐改变的，这样就可以创建动画效果。
+          //详情请看http://www.w3school.com.cn/jquery/effect_animate.asp
+          $i.animate({
+            //将原来的位置向上移动180
+            "top": y - 180,
+            "opacity": 0
+            //1500动画的速度
+          }, 1500, function () {
+            //时间到了自动删除
+            $i.remove();
+          });
+        });
+      })
+      ;
+    </script>
+  
+
+
+
+
+
+
+
+</body>
+</html>
